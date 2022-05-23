@@ -1,0 +1,236 @@
+
+/* home page (basic blocks) ------------------------------- */
+.navigation_ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+.navigation_li {
+  margin: 20px 20px 20px 0;
+}
+
+/* ======================================================== */
+
+/* home page (basic blocks) ------------------------------- */
+
+.homeBlock {
+  max-width: 1920px;
+  width: 100%;
+  height: 985px;
+  /*border: 1px solid black;  */
+}
+
+.logo {
+  height: 900px; /*985px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: url(../assets/logo_back.png);
+  background-position: center center;
+}
+.aboutUs {
+  height: 400px;
+}
+.howItWorks {
+  height: 400px;
+  color: white;
+}
+.reviews {
+  height: 400px;
+}
+
+.footer {
+  height: fit-content; /*height: 519px;*/
+  background: lightgrey;
+  display: grid;
+  grid-template-rows: 1fr 60px;
+}
+
+
+.logo_footer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  min-height: 500px;
+}
+.logo_footer__slogan   {
+  font-family: Roboto;
+  font-size: 72px;
+  font-weight: 100;
+  line-height: 84px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #FFFFFF; /**/
+  max-width: 500px;
+}
+.slogan_span {
+  font-weight: 700;
+}
+
+
+.logo_footer__form {
+  /*color: white;
+  font-size: 18px;*/
+}
+
+
+
+
+
+/* about us ------------------------------- */
+.aboutUs_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 60%;
+  margin: 0 auto;
+}
+.aboutUs_ul {
+  list-style-type: none;
+  padding: 0;
+}
+.aboutUs_li {
+  margin-top: 10px;
+}
+
+/* howItWorks ------------------------------- */
+.howItWorks {
+  height: 500px;
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  background: url(../assets/hiw_back.png);
+  background-position: center center;
+  /*mix-blend-mode: normal;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));*/
+}
+
+.howItWorks__header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;  
+}
+
+.howItWorks__body {
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
+  margin: 0 auto;  
+}
+
+.hiwHead__button {
+  width: 325px;
+  height: 60px;
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+.hiwHead__logo {
+  text-transform: uppercase;
+
+  font-family: Roboto;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 42px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+
+.hiw_item {
+  width: 150px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.hiw_item__img {
+  width: 100px;
+  border-radius: 50%;
+}
+.hiw_item__text {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
+
+/* reviews  ------------------------------- */
+.reviews {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin: 80px auto;
+}
+
+.reviews_headtext {
+  width: 80%;
+  text-transform: uppercase;
+
+  font-family: Roboto;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 42px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.reviews_ul {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+.reviews_sliders {
+  display: flex;
+  justify-content: center;  
+}
+
+.reviewsOne {
+  display: flex;
+}
+.reviewsOne__img {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 50%;
+}
+.reviewsOne__content {
+  max-width: 400px;
+  margin-left: 20px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;  
+}
+.reviewsOne__name {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.reviewsOne__revtext {
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+
+
+

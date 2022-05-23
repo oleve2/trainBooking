@@ -1,0 +1,27 @@
+
+.logo_header {
+  display: flex;
+  flex-direction: column;  
+}
+
+/*1*/
+.logo_header__wrapperLogotype {
+  background-color: #000000;
+  opacity: 60%;
+}
+.logo_header__logotype {
+  margin-left: 40px;
+  color: white;
+}
+
+.logo_header__wrapperNav {
+  background-color: #292929;
+}
+.logo_header__nav {
+  margin-left: 40px;
+}
+.logo_header__nav a {
+  color: white;
+  text-decoration: none;
+}
+/*2*/
