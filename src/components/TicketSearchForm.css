@@ -12,6 +12,7 @@
 .FInput {
   width: 300px;
   height: 60px;
+  font-size: 24px;
 }
 
 .ticketSearchForm {
@@ -45,6 +46,15 @@
   text-align: center;
 }
 
+
+
+.listDivDropDown {
+  background: url('../assets/whiteBack1.png');
+  color: black;
+  font-size: 24px;
+  padding: 10px;
+  opacity: 100%;
+}
 
 
 

@@ -43,7 +43,7 @@
 }
 .trip_date__label {
   width: 300px;
-  margin: 10px 0 10px 0;  
+  margin: 10px;  
 
   font-family: Roboto;
   font-size: 30px;
@@ -74,4 +74,18 @@
   align-items: center;
   margin: 10px auto
 }
+
+
+.tspb__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 15px;
+  width: 300px;
+}
+
+.tsparamBlock {
+  margin: 10px;
+}
+
 

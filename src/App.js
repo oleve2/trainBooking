@@ -1,4 +1,4 @@
-
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import PageHome from './pages/PageHome';
@@ -8,8 +8,17 @@ import PageOrderSuccess from './pages/PageOrderSuccess';
 
 import './App.css';
 
+import { fetchTicketsLast } from './rtkstore/ticketReducer';
+import { useDispatch } from 'react-redux';
+
 // --------------------------
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect( () => {
+    dispatch(fetchTicketsLast());
+  },[])
+
   return (
     <div className='mainWrapper'>
       <BrowserRouter>

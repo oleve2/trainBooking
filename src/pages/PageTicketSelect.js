@@ -1,4 +1,6 @@
 
+import { useState, useEffect } from "react";
+
 import Navigation from "../components/Navigation"
 import TicketSearchForm from "../components/TicketSearchForm"
 import Footer from "../components/Footer";
@@ -19,8 +21,19 @@ import imgLux from '../assets/lux.png';
 import imgWifi from '../assets/wifi.png';
 import imgExpress from '../assets/express.png';
 
+import { useSelector/*, useDispatch*/ } from 'react-redux';
+
+import tstoggle from '../assets/tudasuda_toggle.png';
+import arrowFrom from '../assets/arrowFrom.png';
+import arrowTo from '../assets/arrowTo.png';
+
 // -------------------------------------
 export default function PageTicketSelect(props) {
+  const storeTicketsLast = useSelector( (store) => store.ticketReducer.ticketsLast)
+
+  const [tudaToggle, setTudaToggle] = useState(false)
+  const [obratnoToggle, setObratnoToggle] = useState(false)
+
   return (<>
     <div className="TSHeader block">
       <HeaderLogoNavi/>
@@ -93,26 +106,44 @@ export default function PageTicketSelect(props) {
           <hr className="hrLine"/>
 
           <div className="tsparamBlock">
-            <label className="trip_date__label">Туда</label>
-            <TudaObratno  /> {/* title='Туда' */}
+            <div className="tspb__header">
+              <div>
+                <img src={arrowFrom} alt="arrFrom" />
+                <label className="trip_date__label">Туда</label>
+              </div>
+              <img src={tstoggle} alt="toggle" onClick={() => {setTudaToggle(!tudaToggle)}}/>
+            </div>
+            
+            { tudaToggle ? <TudaObratno  /> : <></> }
           </div>
           <hr className="hrLine"/>
 
           <div className="tsparamBlock">
-            <label className="trip_date__label">Обратно</label>
-            <TudaObratno  /> {/* title='Обратно' */}
+            <div className="tspb__header">
+              <div>
+                <img src={arrowTo} alt="arrTo" />
+                <label className="trip_date__label">Обратно</label>
+              </div>
+              <img src={tstoggle} alt="toggle"  onClick={() => {setObratnoToggle(!obratnoToggle)}}/>
+            </div>
+
+            { obratnoToggle ? <TudaObratno  /> : <></> }
           </div>
+          
 
         </div>
         
         <div className="TSLatest block">
-          <div>Последние билеты</div> 
-          <ul>
-            <li>Санкт-Петербург</li>
-            <li>Москва</li>
-            <li>Казань</li>
-          </ul>
-        </div>
+          <h3 style={{marginBottom: '15px'}}>Последние билеты</h3> 
+          { storeTicketsLast.map( (item) => {
+            return <div style={{marginBottom: '10px'}}>
+              <div>from: {item.departure.from.city.name}({item.departure.from.railway_station_name})</div>
+              <div>to: {item.departure.to.city.name}({item.departure.to.railway_station_name})</div>
+              <div>wifi:{JSON.stringify(item.have_wifi)} / express:{JSON.stringify(item.is_express)} / conditioning:{JSON.stringify(item.have_air_conditioning)}</div>
+              <div>от {item.min_price} р.</div>
+            </div>
+          }) }
+      </div>
       </div>
 
       {/* --------------------------------- */}
