@@ -9,7 +9,7 @@ export default function TudaObratno(props) {
         <RangeSlider min={0} max={24} rangeName='Время отбытия' rangeWidth='300px'/>
       </div>
       <div>
-      <RangeSlider min={0} max={24} rangeName='Время прибытия' rangeWidth='300px'/>
+        <RangeSlider min={0} max={24} rangeName='Время прибытия' rangeWidth='300px'/>
       </div>
     </div>
   )

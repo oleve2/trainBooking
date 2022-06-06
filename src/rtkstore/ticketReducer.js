@@ -6,8 +6,8 @@ const initialState = {
   ticketsLast: [],
   searchParams: {
     // обяхательный параметры
-    cityFrom: [],
-    cityTo: [],
+    cityFrom: '', //[],
+    cityTo: '', //[],
 
     // даты для обязаельных
     dateFrom: '',
@@ -61,11 +61,31 @@ const ticketReducer = createSlice({
 export const actionsTicketReducer = ticketReducer.actions;
 export default ticketReducer.reducer;
 
-// 
+// latest tickets
 export const fetchTicketsLast = () => async (dispatch) => {
   let resp = await fetch(`${baseURL}/routes/last`, {method: 'GET'});
   let data = await resp.json();
   dispatch(actionsTicketReducer.setTicketsLast(data));
+}
+
+// fetch cities list by search filter
+export const fetchCityFrom = (cityStr) => async () => { 
+  async function getData(str) {
+    let resp = await fetch(`https://fe-diplom.herokuapp.com/routes/cities?name=${str}`);
+    let data = await resp.json();
+    console.log('data inside getData=', data);
+    return data;  //setCityFrom(data);
+  }
+
+  let timer1 = setTimeout( async () => {
+    let cityStr2 = (cityStr === '') ? 'a' : cityStr;
+    let data = await getData(cityStr2);
+    console.log('cityStr2 data =', data);
+    //dispatch(actionsTicketReducer.setCityFrom(data)); // custom setter
+    return data;
+  }, 500);
+  //
+  return () => clearTimeout(timer1);  
 }
 
 

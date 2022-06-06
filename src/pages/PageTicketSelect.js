@@ -135,8 +135,8 @@ export default function PageTicketSelect(props) {
         
         <div className="TSLatest block">
           <h3 style={{marginBottom: '15px'}}>Последние билеты</h3> 
-          { storeTicketsLast.map( (item) => {
-            return <div style={{marginBottom: '10px'}}>
+          { storeTicketsLast.map( (item, index) => {
+            return <div style={{marginBottom: '10px'}} key={index}>
               <div>from: {item.departure.from.city.name}({item.departure.from.railway_station_name})</div>
               <div>to: {item.departure.to.city.name}({item.departure.to.railway_station_name})</div>
               <div>wifi:{JSON.stringify(item.have_wifi)} / express:{JSON.stringify(item.is_express)} / conditioning:{JSON.stringify(item.have_air_conditioning)}</div>

@@ -4,6 +4,7 @@ import './TicketSearchForm.css';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { actionsTicketReducer } from '../rtkstore/ticketReducer';
+import { fetchCityFrom } from '../rtkstore/ticketReducer';
 
 export default function TicketSearchForm(props) {
   const navigate = useNavigate();
@@ -11,19 +12,23 @@ export default function TicketSearchForm(props) {
 
   // store 
   const storeCityFrom = useSelector( (store) => store.ticketReducer.searchParams.cityFrom);
-  const storeCityTo = useSelector( (store) => store.ticketReducer.searchParams.cityTo);
+  const storeCityTo   = useSelector( (store) => store.ticketReducer.searchParams.cityTo);
 
   // cities
+  const [cityFromStr, setcityFromStr] = useState( (storeCityFrom.name == undefined) ? '' : storeCityFrom.name ); //''
+  const [cityFrom, setCityFrom] = useState([]);  // init from store
   const [isCityFromSelected, setisCityFromSelected] = useState(false);
-  const [cityFrom, setCityFrom] = useState([]);  //
   const [flgCityFromLoaded, setflgCityFromLoaded] = useState(false); // flag cityFrom loaded
- 
-  const [isCityToSelected, setIsCityToSelected] = useState(false);
-  const [cityTo, setCityTo] = useState([]);
-  const [flgCityToLoaded, setflgCityToLoaded] = useState(false); // flag cityTo loaded
+  const [flgCityFromShow, setflgCityFromShow] = useState(false);  // flag show
+  const [cityFromHover, setcityFromHover] = useState(false); // hover over list of cities
 
-  const [cityFromStr, setcityFromStr] = useState('');
-  const [cityToStr, setcityToStr] = useState('');
+  const [cityToStr, setcityToStr] = useState(  (storeCityTo.name == undefined) ? '' : storeCityTo.name  ); //''
+  const [cityTo, setCityTo] = useState([]); // init from store
+  const [isCityToSelected, setIsCityToSelected] = useState(false);
+  const [flgCityToLoaded, setflgCityToLoaded] = useState(false); // flag cityTo loaded
+  const [flgCityToShow, setflgCityToShow] = useState(false);  // flag show
+  const [cityToHover, setcityToHover] = useState(false); // hover over list of cities 
+  
 
   // dates
   const [dateFrom, setDateFrom] = useState('');
@@ -42,95 +47,138 @@ export default function TicketSearchForm(props) {
     setisCityFromSelected(false);
     setcityFromStr(e.target.value) 
   }
-  const handleCityToInputChange = (e) => { 
+
+  const handleCityToInputChange = (e) => {
     setIsCityToSelected(false);
     setcityToStr(e.target.value) 
   }
 
   // https://erikmartinjordan.com/start-search-user-not-typing
+  /**/
+  const fetchCity = async (str) => {
+    let resp = await fetch(`https://fe-diplom.herokuapp.com/routes/cities?name=${str}`); //cityFromStr
+    let data = await resp.json();
+    return data;
+  }
+
   // city from
   useEffect( () => {
-    async function getData1() {
-      let resp = await fetch(`https://fe-diplom.herokuapp.com/routes/cities?name=${cityFromStr}`);
-      let data = await resp.json();
-      console.log('from ', data);
+    let timer1 = setTimeout( async () => {
+      let cityFromStr2 = (cityFromStr === '') ? 'а' : cityFromStr;
+      setflgCityFromLoaded(false);
+      let data = await fetchCity(cityFromStr2);
       setCityFrom(data);
       setflgCityFromLoaded(true);
-    }
-    let timer1 = setTimeout( async () => {
-      if(cityFromStr !== '') {
-        setflgCityFromLoaded(false);
-        await getData1();
-      } else {
-        setCityFrom([]);
-      }
     }, 500);
     return () => clearTimeout(timer1);
   }, [cityFromStr])
 
   // city to
   useEffect( () => {
-    async function getData2() {
-      let resp = await fetch(`https://fe-diplom.herokuapp.com/routes/cities?name=${cityToStr}`);
-      let data = await resp.json();
-      console.log('to ', data);
+    let timer2 = setTimeout( async () => {
+      let cityToStr2 = (cityToStr === '') ? 'а' : cityToStr;
+      setflgCityToLoaded(false);
+      let data = await fetchCity(cityToStr2);
       setCityTo(data);
       setflgCityToLoaded(true);
-    }
-    let timer2 = setTimeout( async () => {
-      if(cityToStr !== '') {
-        setflgCityToLoaded(false);
-        await getData2();
-      } else {
-        setCityTo([]);
-      }
     }, 500);
     return () => clearTimeout(timer2);
   }, [cityToStr])
 
   /*
   useEffect( () => {
-    
+    console.log('11=', storeCityFrom.name);
+    setcityFromStr(storeCityFrom.name);
+    setcityToStr(storeCityTo.name);
   }, [])
   */
+
   // ---------------------------------------------------
   return (
     <div className='ticketForm'>
+    {/*
+    <div>cityFrom:{JSON.stringify(cityFrom)}</div>        <br />  
+    <div>flgCityFromShow:{JSON.stringify(flgCityFromShow)}</div>
+    <div>isCityFromSelected:{JSON.stringify(isCityFromSelected)}</div>
+    <div>cityFromHover:{JSON.stringify(cityFromHover)}</div>  <br /> 
+
+    <div>cityTo:{JSON.stringify(cityTo)}</div>        <br />  
+    <div>flgCityToShow:{JSON.stringify(flgCityToShow)}</div>   
+    <div>isCityToSelected:{JSON.stringify(isCityToSelected)}</div>     
+    <div>cityToHover:{JSON.stringify(cityToHover)}</div>  <br /> 
+    */}
 
     <form className='ticketSearchForm'>
       <div className={(dir === 'column' ? 'dirColumn' : 'dirRow')}>
         <div style={{height: '100px', margin: '40px'}}>
           <label>Направление</label>
           <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
-            <div>
-              <input className="FInput" onChange={handleCityFromInputChange} value={cityFromStr}/>
-              { (flgCityFromLoaded && !isCityFromSelected)
-                ? <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div
+              onFocus={ () => {setflgCityFromShow(true)}} 
+              onBlur={ () => { 
+                if (cityFromHover === true) {
+                  setflgCityFromShow(true);
+                } else {
+                  setflgCityFromShow(false);
+                  setcityFromHover(false);
+                }
+              }}
+            >
+              <input className="FInput" value={cityFromStr} 
+                onChange={handleCityFromInputChange} 
+              />
+              { ((flgCityFromLoaded && !isCityFromSelected) && flgCityFromShow)
+                ? <div className='listDiv' 
+                  onMouseEnter={() => { setcityFromHover(true) }} 
+                  onMouseLeave={() => { setcityFromHover(false) }}
+                  >
                 { cityFrom.map( (item) => {
-                  return <div key={item._id} className='listDivDropDown' onClick={() => {
-                    setcityFromStr(item.name);
-                    storeSetDateFrom(item);
-                    setisCityFromSelected(true);
-                  }}
+                  return <div key={item._id} className='listDiv__dropdown' 
+                    onClick={() => {
+                      setcityFromStr(item.name);
+                      storeSetDateFrom(item); // set to store
+                      setisCityFromSelected(true);
+                      setflgCityFromShow(false);
+                      setcityFromHover(false);
+                    }}
                   >{item.name}</div>
                 }) }              
                 </div>
-              : <></>
+                : <></>
               }
             </div>
             
             <img src="" alt="switch" className='tsf_img' style={{width: '50px', height:'50px'}} onClick={changeDir} />
 
-            <div>
-              <input className="FInput" onChange={handleCityToInputChange} value={cityToStr} />
-              { (flgCityToLoaded && !isCityToSelected)
-                ? <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div 
+              onFocus={() => {setflgCityToShow(true)}}
+              onBlur={ () => { 
+                if (cityToHover === true) {
+                  setflgCityToShow(true)
+                } else {
+                  setflgCityToShow(false);
+                  setcityToHover(false);
+                }
+              }}
+            >
+              <input className="FInput" value={cityToStr}
+                onChange={handleCityToInputChange}  
+              />
+              { ( (flgCityToLoaded && !isCityToSelected) && flgCityToShow )
+                ? <div className='listDiv'
+                  onMouseEnter={() => { setcityToHover(true) }} 
+                  onMouseLeave={() => { setcityToHover(false) }}
+                  >
                 { cityTo.map( (item) => {
-                  return <div key={item._id} className='listDivDropDown' onClick={() => {
-                    setcityToStr(item.name);
-                    storeSetDateTo(item);
-                    setIsCityToSelected(true);
-                  }}>{item.name}</div> 
+                  return <div key={item._id} className='listDiv__dropdown' 
+                    onClick={() => {
+                      setcityToStr(item.name);
+                      storeSetDateTo(item); // set to store
+                      setIsCityToSelected(true);
+                      setflgCityToShow(false);
+                      setcityToHover(false);
+                    }}
+                  >{item.name}</div> 
                 }) }
                   </div>
                 : <></> 
@@ -157,16 +205,7 @@ export default function TicketSearchForm(props) {
       </div>
       
     </form>
-    
-    {/*
-    <div>cityFrom:{JSON.stringify(cityFrom)}</div>        <br />
-    <div>cityTo:{JSON.stringify(cityTo)}</div>            <br />
-    <div>cityFromStr:{JSON.stringify(cityFromStr)}</div>     
-    <div>cityToStr:{JSON.stringify(cityToStr)}</div>       <br />
 
-    <div>storeCityFrom:{JSON.stringify(storeCityFrom)}</div>
-    <div>storeCityTo:{JSON.stringify(storeCityTo)}</div>   <br />
-    */}
     </div>
   )
 }

@@ -4,7 +4,8 @@
   height: fit-content;
   padding: 10px;
   background-color: #292929;
-  opacity: 80%;
+  /*opacity: 80%;*/
+  background: rgba(0, 0, 0, 0.6);
   color: white;
   
 }
@@ -47,13 +48,19 @@
 }
 
 
+.listDiv {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  border: 1px solid black;
+}
 
-.listDivDropDown {
-  background: url('../assets/whiteBack1.png');
+.listDiv__dropdown {
+  background: #ffffff;
   color: black;
   font-size: 24px;
   padding: 10px;
-  opacity: 100%;
+  width: 287px;
 }
 
 

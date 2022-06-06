@@ -76,7 +76,6 @@
 
 
 
-
 /* about us ------------------------------- */
 .aboutUs_wrapper {
   display: flex;
@@ -88,8 +87,19 @@
 }
 .aboutUs_ul {
   list-style-type: none;
-  padding: 0;
+  padding: 0 0 0 10px;
+  border-left: 10px solid orange;
+
 }
+/*.aboutUs_ul:before {
+  content: '';
+  background-image: url('../assets/orange_bar.png');
+  background-size: 100px 40px;
+  display: inline-block;
+  width: 100%;
+  height: 10px;  
+}*/
+
 .aboutUs_li {
   margin-top: 10px;
 }
