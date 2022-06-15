@@ -4,7 +4,7 @@ import './TicketSearchForm.css';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { actionsTicketReducer } from '../rtkstore/ticketReducer';
-import { fetchCityFrom } from '../rtkstore/ticketReducer';
+import { fetchRoutes } from '../rtkstore/ticketReducer';
 
 export default function TicketSearchForm(props) {
   const navigate = useNavigate();
@@ -38,10 +38,14 @@ export default function TicketSearchForm(props) {
   const [dir, setDir] = useState(props.direction); // 'column' or 'row'
   const changeDir = () => { (dir === 'column') ? setDir('row') : setDir('column'); }
 
-  // functions
-  const storeSetDateFrom = (val) => { dispatch(actionsTicketReducer.setCityFrom(val)) }
-  const storeSetDateTo = (val) => { dispatch(actionsTicketReducer.setCityTo(val)) }
-  const handleClick = () => { navigate('/ticket_select') }
+  // store setting functions
+  const storeSetCityFrom = (val) => { 
+    dispatch(actionsTicketReducer.setCityFrom(val)) 
+  }
+  const storeSetCityTo = (val) => { 
+    dispatch(actionsTicketReducer.setCityTo(val)) 
+  }
+  
 
   const handleCityFromInputChange = (e) => { 
     setisCityFromSelected(false);
@@ -53,6 +57,25 @@ export default function TicketSearchForm(props) {
     setcityToStr(e.target.value) 
   }
 
+  // 
+  const clickCityFromDroplistDiv = (item) => {
+    setcityFromStr(item.name);
+    storeSetCityFrom(item); // set cityFrom to store
+    setisCityFromSelected(true);
+    setflgCityFromShow(false);
+    setcityFromHover(false);
+  }
+
+  // 
+  const clickCityToDroplistDiv = (item) => {
+    setcityToStr(item.name);
+    storeSetCityTo(item); // set cityTo to store
+    setIsCityToSelected(true);
+    setflgCityToShow(false);
+    setcityToHover(false);
+  }  
+
+
   // https://erikmartinjordan.com/start-search-user-not-typing
   /**/
   const fetchCity = async (str) => {
@@ -60,6 +83,30 @@ export default function TicketSearchForm(props) {
     let data = await resp.json();
     return data;
   }
+
+  // click search items button
+  const handleSearchButton = () => {
+    /*console.log(storeCityFrom, cityFromStr, cityFromStr === '', storeCityFrom._id);
+    console.log(storeCityTo, cityToStr, cityToStr === '', storeCityTo._id);*/
+
+    let flgValidCityFrom = ( (storeCityFrom._id !== undefined) && (cityFromStr !== '') && (storeCityFrom.name === cityFromStr) );
+    let flgValidCityTo   = ( (storeCityTo._id !== undefined) && (cityToStr !== '') && (storeCityTo.name === cityToStr) );
+    
+    if (!flgValidCityFrom) {
+      alert('Заполните корректно поле "Направление отбытия"!');
+      return;
+    };
+    if (!flgValidCityTo) {
+      alert('Заполните корректно поле "Направление прибытия"!');
+      return;
+    };
+    if (flgValidCityFrom && flgValidCityTo) {
+      console.log('==> search begins !!!');
+      navigate('/ticket_select');
+      dispatch(fetchRoutes(storeCityFrom._id, storeCityTo._id));
+    }
+  }
+
 
   // city from
   useEffect( () => {
@@ -85,13 +132,6 @@ export default function TicketSearchForm(props) {
     return () => clearTimeout(timer2);
   }, [cityToStr])
 
-  /*
-  useEffect( () => {
-    console.log('11=', storeCityFrom.name);
-    setcityFromStr(storeCityFrom.name);
-    setcityToStr(storeCityTo.name);
-  }, [])
-  */
 
   // ---------------------------------------------------
   return (
@@ -134,12 +174,8 @@ export default function TicketSearchForm(props) {
                   >
                 { cityFrom.map( (item) => {
                   return <div key={item._id} className='listDiv__dropdown' 
-                    onClick={() => {
-                      setcityFromStr(item.name);
-                      storeSetDateFrom(item); // set to store
-                      setisCityFromSelected(true);
-                      setflgCityFromShow(false);
-                      setcityFromHover(false);
+                    onClick={() => { 
+                      clickCityFromDroplistDiv(item);
                     }}
                   >{item.name}</div>
                 }) }              
@@ -171,12 +207,8 @@ export default function TicketSearchForm(props) {
                   >
                 { cityTo.map( (item) => {
                   return <div key={item._id} className='listDiv__dropdown' 
-                    onClick={() => {
-                      setcityToStr(item.name);
-                      storeSetDateTo(item); // set to store
-                      setIsCityToSelected(true);
-                      setflgCityToShow(false);
-                      setcityToHover(false);
+                    onClick={() => {  
+                      clickCityToDroplistDiv(item);
                     }}
                   >{item.name}</div> 
                 }) }
@@ -201,7 +233,7 @@ export default function TicketSearchForm(props) {
       
       {/* 3 */}
       <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '40px', marginBottom: '40px'}}>
-        <button className='tsf_button' type="button" onClick={handleClick}>Найти билеты</button>
+        <button className='tsf_button' type="button" onClick={handleSearchButton}>Найти билеты</button>
       </div>
       
     </form>

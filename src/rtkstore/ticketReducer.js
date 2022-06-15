@@ -4,6 +4,7 @@ const baseURL = 'https://fe-diplom.herokuapp.com';
 
 const initialState = {
   ticketsLast: [],
+  ticketsSearchResult: [],
   searchParams: {
     // обяхательный параметры
     cityFrom: '', //[],
@@ -53,6 +54,11 @@ const ticketReducer = createSlice({
     // Last
     setTicketsLast(state, action) {
       state.ticketsLast = action.payload;
+    },
+
+    // ticketsFound (by idFrom, idTo)
+    setTicketsSearchResult(state, action) {
+      state.ticketsSearchResult = action.payload;
     }
   }
 })
@@ -68,24 +74,12 @@ export const fetchTicketsLast = () => async (dispatch) => {
   dispatch(actionsTicketReducer.setTicketsLast(data));
 }
 
-// fetch cities list by search filter
-export const fetchCityFrom = (cityStr) => async () => { 
-  async function getData(str) {
-    let resp = await fetch(`https://fe-diplom.herokuapp.com/routes/cities?name=${str}`);
-    let data = await resp.json();
-    console.log('data inside getData=', data);
-    return data;  //setCityFrom(data);
-  }
-
-  let timer1 = setTimeout( async () => {
-    let cityStr2 = (cityStr === '') ? 'a' : cityStr;
-    let data = await getData(cityStr2);
-    console.log('cityStr2 data =', data);
-    //dispatch(actionsTicketReducer.setCityFrom(data)); // custom setter
-    return data;
-  }, 500);
-  //
-  return () => clearTimeout(timer1);  
+// 
+export const fetchRoutes = (idFrom, idTo) => async (dispatch) => { 
+  let resp = await fetch(`${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}`);
+  let data = await resp.json();
+  console.log('data tickets search=', data);
+  dispatch(actionsTicketReducer.setTicketsSearchResult(data));
 }
 
 

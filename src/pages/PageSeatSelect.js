@@ -1,6 +1,8 @@
 
-//import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from "react-router-dom"
+import { useState, useEffect } from 'react';
+
+import { useSelector/*, useDispatch*/ } from 'react-redux';
 
 // styles
 import './PageTicketSelect.css';
@@ -10,7 +12,7 @@ import './PageTicketSelect.css';
 import TicketSearchForm from "../components/TicketSearchForm"
 import Footer from "../components/Footer";
 import HeaderLogoNavi from "../components/HeaderLogoNavi";
-import TicketSingle from "../components/TicketSingle";
+//import TicketSingle from "../components/TicketSingle";
 
 import NavigationTicket from "../components/NavigationTicket";
 
@@ -18,17 +20,33 @@ import NavigationTicket from "../components/NavigationTicket";
 import TickSel_SearchPanel from "../components/TickSel_SearchPanel";
 import TickSel_TicketsLatest from "../components/TickSel_TicketsLatest";
 
-// -------------------------------------
-export default function PageTicketSelect(props) {
+
+
+export default function PageSeatSelect(props) {
   // store
   const storeTicketsLast = useSelector( (store) => store.ticketReducer.ticketsLast);
-  const storeTicketsSearchResult = useSelector( (store) => store.ticketReducer.ticketsSearchResult);
+
+  const {trainId} = useParams();
+
+  const [seatData, setseatData] = useState([]);
+  const [seatDataLoaded, setseatDataLoaded] = useState(false);
 
   //
+  useEffect( () => {
+    async function getData(trainId) {
+      let resp = await fetch(`https://fe-diplom.herokuapp.com/routes/${trainId}/seats`);
+      let data = await resp.json();
+      setseatData(data);
+      setseatDataLoaded(true);
+    };
+    //
+    getData(trainId);
+  },[])
+
   return (<>
     <div className="TSHeader block">
       <HeaderLogoNavi/>
-      
+
       <div className="tsform">
         <TicketSearchForm  direction='row'/>
       </div>
@@ -44,26 +62,14 @@ export default function PageTicketSelect(props) {
       </div>
 
       <div className="TSBody__right"  style={{overflowX: 'scroll'}}>
-        <div className="TicketList">
-          <h3>Билеты</h3>
-          <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
-            <div>Найдено 20</div>
-            <div>Сортировать по: времени</div>
-            <div>показывать по: 5 10 20</div>
-          </div>
-          <ul style={{padding: '0', listStyleType: 'none', display: 'flex', flexDirection: 'column'}}>
-            {
-            (storeTicketsSearchResult.total_count > 0)
-            ? <>
-              { storeTicketsSearchResult.items.map( (item) => {
-                return <li key={item.departure._id} style={{minWidth: '900px', minHeight: '300px', border: '1px solid black', margin: '0px 20px 20px 0px'}}>
-                  <TicketSingle ticket={item} />
-                </li>  
-              }) }
-            </>
-            : <></>
+        <div>
+          <div>train ID: {trainId}</div>
+            { (seatDataLoaded) 
+              ? <>
+              {JSON.stringify(seatData)}
+              </> 
+              : <></> 
             }
-          </ul>
         </div>
 
         <div className="TicketSlider block" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -83,8 +89,5 @@ export default function PageTicketSelect(props) {
     <div className="TSFooter">
       <Footer/>
     </div>
-  </>
-  )
+  </>)
 }
-
-
