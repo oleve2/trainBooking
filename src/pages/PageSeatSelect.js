@@ -19,28 +19,32 @@ import NavigationTicket from "../components/NavigationTicket";
 // left side pandels
 import TickSel_SearchPanel from "../components/TickSel_SearchPanel";
 import TickSel_TicketsLatest from "../components/TickSel_TicketsLatest";
-
+// slider
+import TickSel_Slider from "../components/TickSel_Slider";
 
 
 export default function PageSeatSelect(props) {
   // store
   const storeTicketsLast = useSelector( (store) => store.ticketReducer.ticketsLast);
-
+  // train id from url
   const {trainId} = useParams();
-
+  //
   const [seatData, setseatData] = useState([]);
   const [seatDataLoaded, setseatDataLoaded] = useState(false);
 
   //
   useEffect( () => {
     async function getData(trainId) {
-      let resp = await fetch(`https://fe-diplom.herokuapp.com/routes/${trainId}/seats`);
+      let url = `https://fe-diplom.herokuapp.com/routes/${trainId}/seats`;
+      console.log(`url=${url}`);
+      let resp = await fetch(url);
       let data = await resp.json();
       setseatData(data);
       setseatDataLoaded(true);
     };
     //
-    getData(trainId);
+    window.scrollTo(0,0); // scroll up
+    getData(trainId);     // fetch data
   },[])
 
   return (<>
@@ -66,23 +70,21 @@ export default function PageSeatSelect(props) {
           <div>train ID: {trainId}</div>
             { (seatDataLoaded) 
               ? <>
-              {JSON.stringify(seatData)}
+              { seatData.map( (item) => {
+                return <>
+                <br/> <div>{JSON.stringify(item.coach)}</div> 
+                <br/> <div>{JSON.stringify(item.seats)}</div>
+                <hr />
+                </>
+              })
+              }
               </> 
               : <></> 
             }
         </div>
+          
+        <TickSel_Slider />
 
-        <div className="TicketSlider block" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <h4>Крутилка</h4>
-          <div style={{display: 'flex'}}>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>left</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>1</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>2</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>3</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>4</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>right</div>
-          </div>
-        </div>
       </div>
     </div>
 

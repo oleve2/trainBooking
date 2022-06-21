@@ -76,10 +76,28 @@ export const fetchTicketsLast = () => async (dispatch) => {
 
 // 
 export const fetchRoutes = (idFrom, idTo) => async (dispatch) => { 
-  let resp = await fetch(`${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}`);
+  let url = `${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}`;
+  console.log(`url = ${url}`);
+  let resp = await fetch(url);
   let data = await resp.json();
   console.log('data tickets search=', data);
   dispatch(actionsTicketReducer.setTicketsSearchResult(data));
 }
 
+
+// support functions --------------------------------------
+
+export const tsToDate = (ts) => {
+  // тут можно подкрутить формат
+  return new Date(ts * 1000).toISOString().slice(0,19);
+}
+
+export const tsToTime = (ts) => {
+  function propLen(dt) {
+    let dt2 = dt.toString();
+    return (dt2.length<2) ? '0'+dt2 : dt2;
+  }
+  let ts2 = new Date(ts);
+  return propLen(ts2.getHours()) + ':' + propLen(ts2.getMinutes()) + ':' + propLen(ts2.getSeconds());
+}
 

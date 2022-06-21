@@ -17,6 +17,8 @@ import NavigationTicket from "../components/NavigationTicket";
 // left side pandels
 import TickSel_SearchPanel from "../components/TickSel_SearchPanel";
 import TickSel_TicketsLatest from "../components/TickSel_TicketsLatest";
+// slider
+import TickSel_Slider from '../components/TickSel_Slider';
 
 // -------------------------------------
 export default function PageTicketSelect(props) {
@@ -26,7 +28,7 @@ export default function PageTicketSelect(props) {
 
   //
   return (<>
-    <div className="TSHeader block">
+    <div className="TSHeader">
       <HeaderLogoNavi/>
       
       <div className="tsform">
@@ -36,7 +38,7 @@ export default function PageTicketSelect(props) {
       <NavigationTicket />
     </div>
 
-    <div className="TSBody block">
+    <div className="TSBody">
       <div className="TSBody__left">
         <TickSel_SearchPanel />
 
@@ -44,10 +46,11 @@ export default function PageTicketSelect(props) {
       </div>
 
       <div className="TSBody__right"  style={{overflowX: 'scroll'}}>
+        {/* ticket search information */}
         <div className="TicketList">
           <h3>Билеты</h3>
           <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
-            <div>Найдено 20</div>
+            <div>Найдено: ({storeTicketsSearchResult.total_count})</div>
             <div>Сортировать по: времени</div>
             <div>показывать по: 5 10 20</div>
           </div>
@@ -56,7 +59,7 @@ export default function PageTicketSelect(props) {
             (storeTicketsSearchResult.total_count > 0)
             ? <>
               { storeTicketsSearchResult.items.map( (item) => {
-                return <li key={item.departure._id} style={{minWidth: '900px', minHeight: '300px', border: '1px solid black', margin: '0px 20px 20px 0px'}}>
+                return <li key={item.departure._id} style={{minWidth: '900px', minHeight: '300px', margin: '0px 20px 20px 0px'}}>
                   <TicketSingle ticket={item} />
                 </li>  
               }) }
@@ -65,18 +68,9 @@ export default function PageTicketSelect(props) {
             }
           </ul>
         </div>
-
-        <div className="TicketSlider block" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <h4>Крутилка</h4>
-          <div style={{display: 'flex'}}>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>left</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>1</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>2</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>3</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>4</div>
-            <div style={{width: '60px', height: '60px', border: '1px solid black', margin: '5px 10px'}}>right</div>
-          </div>
-        </div>
+        
+        {/* pagination */}
+        <TickSel_Slider />
       </div>
     </div>
 
