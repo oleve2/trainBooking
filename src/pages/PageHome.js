@@ -31,7 +31,7 @@ export default function PageHome(props) {
         Вся жизнь - <span className="logo_footer__slogan slogan_span">путешествие!</span>
       </div>
       <div className="logo_footer__form">
-        <TicketSearchForm direction='column'/>
+        <TicketSearchForm direction='column' isFixed={true}/>
       </div>
     </div>
   </div>

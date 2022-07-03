@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import { useSelector/*, useDispatch*/ } from 'react-redux';
 
-// styles
+// styles (for template page layout)
 import './PageTicketSelect.css';
 
 // components
@@ -12,7 +12,9 @@ import './PageTicketSelect.css';
 import TicketSearchForm from "../components/TicketSearchForm"
 import Footer from "../components/Footer";
 import HeaderLogoNavi from "../components/HeaderLogoNavi";
-//import TicketSingle from "../components/TicketSingle";
+import Coach from "../components/Coach";
+
+
 
 import NavigationTicket from "../components/NavigationTicket";
 
@@ -22,6 +24,13 @@ import TickSel_TicketsLatest from "../components/TickSel_TicketsLatest";
 // slider
 import TickSel_Slider from "../components/TickSel_Slider";
 
+
+const baseURL = process.env.REACT_APP_BASE_URL;
+
+/*
+Components: 
+- Coach.js (схема вагона)
+*/
 
 export default function PageSeatSelect(props) {
   // store
@@ -35,8 +44,8 @@ export default function PageSeatSelect(props) {
   //
   useEffect( () => {
     async function getData(trainId) {
-      let url = `https://fe-diplom.herokuapp.com/routes/${trainId}/seats`;
-      console.log(`url=${url}`);
+      let url = `${baseURL}/routes/${trainId}/seats`; //https://fe-diplom.herokuapp.com
+      //console.log(`url=${url}`);
       let resp = await fetch(url);
       let data = await resp.json();
       setseatData(data);
@@ -48,43 +57,45 @@ export default function PageSeatSelect(props) {
   },[])
 
   return (<>
-    <div className="TSHeader block">
+    <div className="TSHeader">
       <HeaderLogoNavi/>
 
       <div className="tsform">
-        <TicketSearchForm  direction='row'/>
+        <TicketSearchForm  direction='row' isFixed={false}/>
       </div>
 
       <NavigationTicket />
     </div>
 
-    <div className="TSBody block">
-      <div className="TSBody__left">
+    <div className="TSBody">
+      <div> 
         <TickSel_SearchPanel />
 
         <TickSel_TicketsLatest ticketsLast={storeTicketsLast}/>
       </div>
 
-      <div className="TSBody__right"  style={{overflowX: 'scroll'}}>
+      {/* список вагонов (отфильтрованный) и места какие в них есть */}
+      <div> 
         <div>
-          <div>train ID: {trainId}</div>
-            { (seatDataLoaded) 
-              ? <>
-              { seatData.map( (item) => {
-                return <>
-                <br/> <div>{JSON.stringify(item.coach)}</div> 
-                <br/> <div>{JSON.stringify(item.seats)}</div>
-                <hr />
-                </>
-              })
-              }
-              </> 
-              : <></> 
+          <div>
+            train ID: {trainId}
+          </div>
+            
+          { (seatDataLoaded) 
+            ? <>
+            { seatData.map( (item) => {
+              return <div key={item._id}>
+                {/* Coach component */}
+                <Coach data={item} />
+              </div>
+            })
             }
+            </> 
+            : <></> 
+          }
         </div>
           
         <TickSel_Slider />
-
       </div>
     </div>
 

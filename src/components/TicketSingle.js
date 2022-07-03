@@ -26,7 +26,6 @@ export default function TicketSingle(props) {
   }
 
 
-
   //
   return ( <>
   <div className='ticketWrp'>
@@ -67,7 +66,6 @@ export default function TicketSingle(props) {
           {item} / 
           {props.ticket.departure.available_seats_info[item]} <br />
           <div>{ JSON.stringify(filterPriceSeats(item, props.ticket.departure.price_info)) }</div>  
-          
           <br/><br/>
           */}
           

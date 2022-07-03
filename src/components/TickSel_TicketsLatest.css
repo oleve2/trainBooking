@@ -1,0 +1,39 @@
+
+.TSLatest { 
+  margin: 40px 5px 40px 5px; 
+}
+
+/* --------------------------------- */
+
+
+.place {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.place-from {
+  border: 1px solid blue;
+}
+.place-to {
+  border: 1px solid blue;
+}
+
+
+.serv {
+  display: flex;
+  justify-content: space-between;
+}
+.serv-wrapper {
+  display: flex;
+  border: 1px solid red;
+}
+
+.serv_img {
+  margin-right: 10px;
+}
+
+.latest-wrapper {
+  border: 1px solid black;
+  margin: 0px 0px 10px 0px;
+  padding: 5px;
+}

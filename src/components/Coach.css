@@ -1,0 +1,99 @@
+
+/*-------------------------*/
+.CoachSelHeader {
+  display: flex;
+  border: 1px solid blue;
+  padding: 10px;
+}
+.CoachSelHeader__arrow {
+  height: 60px;
+  width: 76px;
+}
+.CoachSelHeader__textwrapper {
+  width: 325px;
+  height: 60px;
+  border: 1px solid black;
+  margin-left: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.CoachSelHeader__text {
+  height: 30px;
+
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;  
+}
+
+/*-------------------------*/
+
+
+/*-------------------------*/
+/*-------------------------*/
+/*-------------------------*/
+/*-------------------------*/
+
+
+.coach-wrapper {
+  min-width: 900px;
+  border: 1px solid red;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.trainInfo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.trainInfo__trainImg {
+  height: 40px;
+  width: 40px;
+}
+
+
+
+.ticketCntLeft {
+  display: flex;
+  justify-content: space-around;
+}
+
+.ticketCntLeft_block {
+  width: 300px;
+  border: 1px solid red;
+}
+
+
+.coachTypes {
+  display: flex;
+  justify-content: space-around;
+}
+.coachTypes__sitting {}
+
+
+
+.seatInfo-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 5px;
+  background: #FFA800;
+}
+
+.seatInfo-body {
+  display: flex;
+  justify-content: space-around;
+}
+
+.body-block {
+  height: 160px;
+  min-width: 190px;
+  border: 1px solid brown;
+}
+
+

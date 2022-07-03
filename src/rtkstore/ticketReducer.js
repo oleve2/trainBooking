@@ -1,12 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const baseURL = 'https://fe-diplom.herokuapp.com';
+//const baseURL = 'https://fe-diplom.herokuapp.com';
+const baseURL = process.env.REACT_APP_BASE_URL;   //'http://localhost:3001';
+
 
 const initialState = {
+  // -------------------------
   ticketsLast: [],
   ticketsSearchResult: [],
+  
+  // -------------------------
+  // cnt ticket per page
+  ticketsPerPage: 5,
+  ticketsPerPageList: [5,10,15],
+  offset: 0,
+
+  cntBlocks: 0,
+  sliderBlockList: [],
+  sliderActive: 1,
+
+
+  // -------------------------
   searchParams: {
-    // обяхательный параметры
+    // обязательные параметры
     cityFrom: '', //[],
     cityTo: '', //[],
 
@@ -51,6 +67,7 @@ const ticketReducer = createSlice({
       state.searchParams.dateTo = action.payload;
     },
 
+    // API fetch results -------------------------------
     // Last
     setTicketsLast(state, action) {
       state.ticketsLast = action.payload;
@@ -59,7 +76,38 @@ const ticketReducer = createSlice({
     // ticketsFound (by idFrom, idTo)
     setTicketsSearchResult(state, action) {
       state.ticketsSearchResult = action.payload;
-    }
+    }, 
+
+    // display options -------------------------------
+    // set ticketsPerPage
+    setticketsPerPage(state, action) {
+      state.ticketsPerPage = action.payload;
+    },
+
+    // offset for slider
+    settoffset(state, action) {
+      state.offset = action.payload;
+    },    
+
+    // cntBlocks
+    setcntBlocks(state, action) {
+      state.cntBlocks = action.payload;
+    },  
+    // sliderBlockList
+    setsliderBlockList(state, action) {
+      state.sliderBlockList = action.payload;
+    },  
+
+    // sliderActive
+    setsliderActive(state, action) {
+      state.sliderActive = action.payload;
+    },
+
+    // search params -------------------------------
+    // isKupe
+    setisKupe(state, action) {
+      state.searchParams.isKupe = action.payload;
+    }  
   }
 })
 
@@ -74,15 +122,79 @@ export const fetchTicketsLast = () => async (dispatch) => {
   dispatch(actionsTicketReducer.setTicketsLast(data));
 }
 
-// 
-export const fetchRoutes = (idFrom, idTo) => async (dispatch) => { 
-  let url = `${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}`;
-  console.log(`url = ${url}`);
+
+
+// https://stackoverflow.com/questions/65277731/redux-toolkit-accessing-state-from-thunk
+// https://github.com/reduxjs/redux-thunk#motivation
+
+// main routes fetch function
+export const fetchRoutes = (idFrom, idTo) => async (dispatch, getState) => { 
+  const stt = getState();
+  //console.log('stt=', stt);
+  //console.log(`thunk => perPage=${stt.ticketReducer.ticketsPerPage}, offset=${stt.ticketReducer.offset}`);
+  let limit = stt.ticketReducer.ticketsPerPage;
+  let offset = stt.ticketReducer.offset * stt.ticketReducer.ticketsPerPage;
+
+  let url = `${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}&limit=${limit}&offset=${offset}`;
+  //console.log(`url = ${url}`);
   let resp = await fetch(url);
   let data = await resp.json();
-  console.log('data tickets search=', data);
+  //console.log('data tickets search=', data);
+  // set to store
   dispatch(actionsTicketReducer.setTicketsSearchResult(data));
 }
+
+//
+/* 
+1) purpose: recalculate number of pages and buttons to slide among them
+
+2) input: 
+- storeticketsPerPage
+- total_count  (= ticketsSearchResult.total_count)
+
+3) output:
+- blocksCnt
+- blockArr
+*/
+export const makeCalcsAAA = (storeticketsPerPage, total_count) => (dispatch) => {
+  let blocksCnt;
+  let blockArr = [];
+
+  //console.log(`perPage=${storeticketsPerPage}, totalCount=${total_count}`);
+  if ( (storeticketsPerPage > 0) && (total_count !== undefined) && (total_count > 0) ) {
+    // 
+    if ( storeticketsPerPage > total_count) {
+      //console.log('storeticketsPerPage > total_count')
+      blockArr.push(1);   // push 1 page in array
+      // setters
+      dispatch( actionsTicketReducer.setcntBlocks(1) );               //setcntBlocks(1);
+      dispatch( actionsTicketReducer.setsliderBlockList(blockArr) );
+      dispatch( actionsTicketReducer.settoffset(0) );
+      return;
+    }
+
+    // cnt  
+    blocksCnt = Math.floor(total_count / storeticketsPerPage);
+    if ((storeticketsPerPage %  total_count) !== 0) {
+      //console.log(`blocksCnt added 1`);
+      blocksCnt += 1;
+    }
+    //console.log(`blocksCnt 1 =${blocksCnt}`);
+
+    // Arr      
+    for (let i=1; i <= blocksCnt; i++) {
+      blockArr.push(i);
+    }
+
+    // setters
+    dispatch( actionsTicketReducer.setcntBlocks(blocksCnt) );       //setcntBlocks(blocksCnt);
+    dispatch( actionsTicketReducer.setsliderBlockList(blockArr) );  //setsliderBlockList(blockArr);
+    dispatch( actionsTicketReducer.settoffset(0) );
+    return;
+  }
+}
+
+
 
 
 // support functions --------------------------------------
@@ -100,4 +212,9 @@ export const tsToTime = (ts) => {
   let ts2 = new Date(ts);
   return propLen(ts2.getHours()) + ':' + propLen(ts2.getMinutes()) + ':' + propLen(ts2.getSeconds());
 }
+
+export const constructRoutesURL = () => {
+  console.log('it\'s constructRoutesURL');
+}
+
 

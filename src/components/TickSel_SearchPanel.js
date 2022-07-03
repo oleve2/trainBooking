@@ -1,7 +1,10 @@
 
-import '../pages/PageTicketSelect.css';
+// styles
+import './TickSel_SearchPanel.css'
+
 
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 // images -----------------
 import tstoggle from '../assets/tudasuda_toggle.png';
@@ -21,14 +24,22 @@ import Switcher from "./ui/Switcher";
 
 import TudaObratno from "./TudaObratno";
 
+// store
+import { actionsTicketReducer } from '../rtkstore/ticketReducer';
+
 
 //
 export default function TickSel_SearchPanel(props) {
+  const dispatch = useDispatch();
 
   const [tudaToggle, setTudaToggle] = useState(false)
   const [obratnoToggle, setObratnoToggle] = useState(false)
 
+  // store
+  const storeisKupe = useSelector( (store) => store.ticketReducer.searchParams.isKupe );
+  const changeIsKupe = (val) => { dispatch( actionsTicketReducer.setisKupe(val) ) };
 
+  
   return (<>
     <div className="TSParams block">
       <div className="tsparamBlock">
@@ -47,8 +58,8 @@ export default function TickSel_SearchPanel(props) {
         <ul className="ticketOptions__ul">
           <li className="ticketOptions__li">
             <img src={imgKupe} alt="Купе" />
-            <div>Купе</div>
-            <Switcher />
+            <div>Купе {JSON.stringify(storeisKupe)}</div>
+            <Switcher data={storeisKupe} changer={changeIsKupe}/>
           </li>
           <li className="ticketOptions__li">
             <img src={imgPlats} alt="Плацкарт" />

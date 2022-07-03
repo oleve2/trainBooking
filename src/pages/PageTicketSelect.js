@@ -1,5 +1,5 @@
 
-//import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
 // styles
@@ -19,47 +19,74 @@ import TickSel_SearchPanel from "../components/TickSel_SearchPanel";
 import TickSel_TicketsLatest from "../components/TickSel_TicketsLatest";
 // slider
 import TickSel_Slider from '../components/TickSel_Slider';
+// ticket display parameters
+import TickSel_TicketDisplayParams from "../components/TickSel_TicketDisplayParams";
+
+
+// custom window resize hook  // https://stackoverflow.com/questions/36862334/get-viewport-window-height-in-reactjs
+import useWindowDimensions from '../hooks/useWindowDimensions';
+
+// store - to update ticketsPerPage
+import { actionsTicketReducer } from "../rtkstore/ticketReducer";
+import { makeCalcsAAA } from "../rtkstore/ticketReducer";
 
 // -------------------------------------
 export default function PageTicketSelect(props) {
+  const dispatch = useDispatch();
+
   // store
   const storeTicketsLast = useSelector( (store) => store.ticketReducer.ticketsLast);
   const storeTicketsSearchResult = useSelector( (store) => store.ticketReducer.ticketsSearchResult);
 
+  const {height, width} = useWindowDimensions();
+
+  // onScroll={handScroll}
+  const handScroll = (e) => { console.log(e.target.scrollLeft) }
+
+  // кнопки показывать по
+  const storeticketsPerPage = useSelector( (store) => store.ticketReducer.ticketsPerPage )
+  const storeticketsPerPageList  = useSelector( (store) => store.ticketReducer.ticketsPerPageList )
+  //const [ticketsByPageLimitActive, setticketsByPageLimitActive] = useState(storeticketsPerPage);
+
   //
   return (<>
+    {/* width={width} height={height} */}
     <div className="TSHeader">
       <HeaderLogoNavi/>
       
       <div className="tsform">
-        <TicketSearchForm  direction='row'/>
+        <TicketSearchForm  direction='row' isFixed={false}/>
       </div>
 
       <NavigationTicket />
     </div>
 
     <div className="TSBody">
-      <div className="TSBody__left">
+      {/* left side */}
+      <div> 
         <TickSel_SearchPanel />
 
         <TickSel_TicketsLatest ticketsLast={storeTicketsLast}/>
       </div>
 
-      <div className="TSBody__right"  style={{overflowX: 'scroll'}}>
-        {/* ticket search information */}
-        <div className="TicketList">
+      {/* right side */}
+      <div style={{border:'1px solid blue', overflowX:'scroll'}}> 
+        <div className='TicketList'>
           <h3>Билеты</h3>
-          <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
-            <div>Найдено: ({storeTicketsSearchResult.total_count})</div>
-            <div>Сортировать по: времени</div>
-            <div>показывать по: 5 10 20</div>
-          </div>
-          <ul style={{padding: '0', listStyleType: 'none', display: 'flex', flexDirection: 'column'}}>
+
+          {/* отображение билетов */}
+          <TickSel_TicketDisplayParams 
+            storeticketsPerPageList={storeticketsPerPageList}
+            ticketsByPageLimitActive={storeticketsPerPage}
+          />
+          
+          {/*  */}
+          <ul className='TicketList__ul'>
             {
             (storeTicketsSearchResult.total_count > 0)
             ? <>
               { storeTicketsSearchResult.items.map( (item) => {
-                return <li key={item.departure._id} style={{minWidth: '900px', minHeight: '300px', margin: '0px 20px 20px 0px'}}>
+                return <li key={item.departure._id} className='TicketList__li'>
                   <TicketSingle ticket={item} />
                 </li>  
               }) }
@@ -70,7 +97,9 @@ export default function PageTicketSelect(props) {
         </div>
         
         {/* pagination */}
-        <TickSel_Slider />
+        <TickSel_Slider 
+          total_count={storeTicketsSearchResult.total_count}
+        />
       </div>
     </div>
 

@@ -1,0 +1,25 @@
+
+._TicketSlider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slider_blockList {
+  display: flex;
+}
+
+.slider_block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 60px;
+  height: 60px;
+  border: 1px solid black;
+  margin: 5px 10px;
+}
+
+.sb_active {
+  background: orange;
+}
