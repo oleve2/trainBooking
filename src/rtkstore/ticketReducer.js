@@ -7,8 +7,9 @@ const baseURL = process.env.REACT_APP_BASE_URL;   //'http://localhost:3001';
 const initialState = {
   // -------------------------
   ticketsLast: [],
-  ticketsSearchResult: [],
-  
+  ticketsSearchResult: [],          // original query result
+  //ticketsSearchResultFiltered: [],  // filtered by search params
+  searchURL: '',
   // -------------------------
   // cnt ticket per page
   ticketsPerPage: 5,
@@ -38,13 +39,10 @@ const initialState = {
     isWifi: false,
     isExpress: false,
 
-    priceFrom: '',
-    priceTo: '',
-    
-    timeArrivalFrom: '',
-    timeArrivalTo: '',
-    timeDepartureFrom: '',
-    timeDepartureTo:'',
+    priceRange: [1, 10000],
+    // 
+    tudaDepartDateRange: [0, 24],
+    tudaArrivDateRange: [0, 24]
   }
 }
 
@@ -53,61 +51,59 @@ const ticketReducer = createSlice({
   initialState: initialState,
   reducers: {
     // cities
-    setCityFrom(state, action) {
-      state.searchParams.cityFrom = action.payload;
-    },
-    setCityTo(state, action) {
-      state.searchParams.cityTo = action.payload;
-    },
+    setCityFrom(state, action) { state.searchParams.cityFrom = action.payload },
+    setCityTo(state, action) { state.searchParams.cityTo = action.payload },
     // dates
-    setDateFrom(state, action) {
-      state.searchParams.dateFrom = action.payload;
-    },
-    setDateTo(state, action) {
-      state.searchParams.dateTo = action.payload;
-    },
+    setDateFrom(state, action) { state.searchParams.dateFrom = action.payload },
+    setDateTo(state, action) { state.searchParams.dateTo = action.payload },
 
     // API fetch results -------------------------------
     // Last
-    setTicketsLast(state, action) {
-      state.ticketsLast = action.payload;
-    },
+    setTicketsLast(state, action) { state.ticketsLast = action.payload },
 
     // ticketsFound (by idFrom, idTo)
-    setTicketsSearchResult(state, action) {
-      state.ticketsSearchResult = action.payload;
-    }, 
+    setTicketsSearchResult(state, action) { state.ticketsSearchResult = action.payload }, 
 
     // display options -------------------------------
     // set ticketsPerPage
-    setticketsPerPage(state, action) {
-      state.ticketsPerPage = action.payload;
-    },
+    setticketsPerPage(state, action) { state.ticketsPerPage = action.payload },
 
     // offset for slider
-    settoffset(state, action) {
-      state.offset = action.payload;
-    },    
+    settoffset(state, action) { state.offset = action.payload },    
 
     // cntBlocks
-    setcntBlocks(state, action) {
-      state.cntBlocks = action.payload;
-    },  
+    setcntBlocks(state, action) { state.cntBlocks = action.payload },  
     // sliderBlockList
-    setsliderBlockList(state, action) {
-      state.sliderBlockList = action.payload;
-    },  
+    setsliderBlockList(state, action) { state.sliderBlockList = action.payload },  
 
     // sliderActive
-    setsliderActive(state, action) {
-      state.sliderActive = action.payload;
-    },
+    setsliderActive(state, action) { state.sliderActive = action.payload },
 
     // search params -------------------------------
     // isKupe
-    setisKupe(state, action) {
-      state.searchParams.isKupe = action.payload;
-    }  
+    setisKupe(state, action) { state.searchParams.isKupe = action.payload },  
+    // isPlatskart
+    setisPlatskart(state, action) { state.searchParams.isPlatskart = action.payload }, 
+    // isSitting
+    setisSitting(state, action) { state.searchParams.isSitting = action.payload },  
+    // isLux
+    setisLux(state, action) { state.searchParams.isLux = action.payload },  
+    // isWifi
+    setisWifi(state, action) { state.searchParams.isWifi = action.payload },  
+    // isExpress
+    setisExpress(state, action) { state.searchParams.isExpress = action.payload },
+    /*
+    // priceFrom
+    setpriceFrom(state, action) { state.searchParams.priceFrom = action.payload },
+    // priceTo
+    setpriceTo(state, action) { state.searchParams.priceTo = action.payload },
+    */
+    // priceRange
+    setpriceRange(state, action) { state.searchParams.priceRange = action.payload },
+    // tudaDepartDateRange
+    settudaDepartDateRange(state, action) { state.searchParams.tudaDepartDateRange = action.payload },
+    // tudaArrivDateRange
+    settudaArrivDateRange(state, action) { state.searchParams.tudaArrivDateRange = action.payload }
   }
 })
 
@@ -128,43 +124,51 @@ export const fetchTicketsLast = () => async (dispatch) => {
 // https://github.com/reduxjs/redux-thunk#motivation
 
 // main routes fetch function
-export const fetchRoutes = (idFrom, idTo) => async (dispatch, getState) => { 
+export const fetchRoutes = () => async (dispatch, getState) => { //idFrom, idTo
+  // 01) get state values info
   const stt = getState();
   //console.log('stt=', stt);
   //console.log(`thunk => perPage=${stt.ticketReducer.ticketsPerPage}, offset=${stt.ticketReducer.offset}`);
   let limit = stt.ticketReducer.ticketsPerPage;
   let offset = stt.ticketReducer.offset * stt.ticketReducer.ticketsPerPage;
 
-  let url = `${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}&limit=${limit}&offset=${offset}`;
+
+  // 02-1) build url from data in store
+  let url = buildRoutesQuery(stt);
+  //let url = `${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}&limit=${limit}&offset=${offset}`;
   //console.log(`url = ${url}`);
+  
+  // 02-2) fetch
   let resp = await fetch(url);
   let data = await resp.json();
   //console.log('data tickets search=', data);
-  // set to store
+  
+  // 03) set to store
   dispatch(actionsTicketReducer.setTicketsSearchResult(data));
 }
 
-//
+
+
+
+// calculate tickets display parameters
 /* 
 1) purpose: recalculate number of pages and buttons to slide among them
-
 2) input: 
-- storeticketsPerPage
-- total_count  (= ticketsSearchResult.total_count)
-
+  - par_storeticketsPerPage
+  - par_total_count  (= ticketsSearchResult.total_count)
 3) output:
-- blocksCnt
-- blockArr
+  - blocksCnt
+  - blockArr
 */
-export const makeCalcsAAA = (storeticketsPerPage, total_count) => (dispatch) => {
+export const makeCalcsAAA = (par_storeticketsPerPage, par_total_count) => (dispatch) => {
   let blocksCnt;
   let blockArr = [];
 
-  //console.log(`perPage=${storeticketsPerPage}, totalCount=${total_count}`);
-  if ( (storeticketsPerPage > 0) && (total_count !== undefined) && (total_count > 0) ) {
+  //console.log(`perPage=${par_storeticketsPerPage}, totalCount=${par_total_count}`);
+  if ( (par_storeticketsPerPage > 0) && (par_total_count !== undefined) && (par_total_count > 0) ) {
     // 
-    if ( storeticketsPerPage > total_count) {
-      //console.log('storeticketsPerPage > total_count')
+    if ( par_storeticketsPerPage > par_total_count) {
+      //console.log('par_storeticketsPerPage > par_total_count')
       blockArr.push(1);   // push 1 page in array
       // setters
       dispatch( actionsTicketReducer.setcntBlocks(1) );               //setcntBlocks(1);
@@ -174,8 +178,8 @@ export const makeCalcsAAA = (storeticketsPerPage, total_count) => (dispatch) => 
     }
 
     // cnt  
-    blocksCnt = Math.floor(total_count / storeticketsPerPage);
-    if ((storeticketsPerPage %  total_count) !== 0) {
+    blocksCnt = Math.floor(par_total_count / par_storeticketsPerPage);
+    if ((par_storeticketsPerPage %  par_total_count) !== 0) {
       //console.log(`blocksCnt added 1`);
       blocksCnt += 1;
     }
@@ -194,16 +198,35 @@ export const makeCalcsAAA = (storeticketsPerPage, total_count) => (dispatch) => 
   }
 }
 
+// set min and max prices in the slider
+export const setMinMaxPrices = (priceFrom, priceTo) => async (dispatch) => {
+  dispatch( actionsTicketReducer.setpriceFrom(priceFrom) );
+  dispatch( actionsTicketReducer.setpriceFrom(priceTo) );
+  console.log('store prices set');
+}
 
+//priceRange
+export const updatepriceRange = (val) => async (dispatch) => {
+  dispatch( actionsTicketReducer.setpriceRange(val) );
+}
+// 
+export const updatetudaDepartDateRange = (val) => async (dispatch) => {
+  dispatch( actionsTicketReducer.settudaDepartDateRange(val) );
+}
+//
+export const updatetudaArrivDateRange = (val) => async (dispatch) => {
+  dispatch( actionsTicketReducer.settudaArrivDateRange(val) );
+}
 
 
 // support functions --------------------------------------
-
+//
 export const tsToDate = (ts) => {
   // тут можно подкрутить формат
   return new Date(ts * 1000).toISOString().slice(0,19);
 }
 
+//
 export const tsToTime = (ts) => {
   function propLen(dt) {
     let dt2 = dt.toString();
@@ -213,8 +236,64 @@ export const tsToTime = (ts) => {
   return propLen(ts2.getHours()) + ':' + propLen(ts2.getMinutes()) + ':' + propLen(ts2.getSeconds());
 }
 
-export const constructRoutesURL = () => {
-  console.log('it\'s constructRoutesURL');
+
+// build a query string for fetching tickets by routes (to use in "fetchRoutes")
+export const buildRoutesQuery = (state) => {
+  // final url
+  let routesURL=`${baseURL}`; 
+
+  // [search params]
+  let tickRedSP = state.ticketReducer.searchParams;
+  //console.log('tickRedSP', tickRedSP);
+  
+  // 1-1) cityFrom cityTo
+  //console.log('cityFrom._id=', tickRedSP.cityFrom._id, 'cityTo._id', tickRedSP.cityTo._id);
+  if ( (tickRedSP.cityFrom === undefined) || (tickRedSP.cityTo === undefined) ) {
+    alert('cityFrom or cityTo is not set');
+    return;
+  } else {
+    routesURL += `/routes?from_city_id=${tickRedSP.cityFrom._id}&to_city_id=${tickRedSP.cityTo._id}`;
+  }
+  
+  // 1-2) dateFrom dateTo
+  //console.log('dateFrom=', tickRedSP.dateFrom, 'dateTo', tickRedSP.dateTo);
+  if ( tickRedSP.dateFrom != '') { routesURL += `&date_start=${tickRedSP.dateFrom}` }
+  if ( tickRedSP.dateTo   != '') { routesURL += `&date_end=${tickRedSP.dateTo}` }
+  
+  // 1-3) is-flags
+  /*console.log('isKupe', tickRedSP.isKupe, 'isPlatskart', tickRedSP.isPlatskart, 
+    'isSitting', tickRedSP.isSitting, 'isLux', tickRedSP.isLux, 
+    'isWifi', tickRedSP.isWifi, 'isExpress', tickRedSP.isExpress);*/
+  //
+  if ( tickRedSP.isKupe      === true) { routesURL += `&have_second_class=${tickRedSP.isKupe}` }
+  if ( tickRedSP.isPlatskart === true) { routesURL += `&have_third_class=${tickRedSP.isPlatskart}` }
+  if ( tickRedSP.isSitting   === true) { routesURL += `&have_fourth_class=${tickRedSP.isSitting}` }
+  if ( tickRedSP.isLux       === true) { routesURL += `&have_first_class=${tickRedSP.isLux}` }
+  if ( tickRedSP.isWifi      === true) { routesURL += `&have_wifi=${tickRedSP.isWifi}` }
+  if ( tickRedSP.isExpress   === true) { routesURL += `&have_express=${tickRedSP.isExpress}` }
+  /*
+  routesURL += `&have_second_class=${tickRedSP.isKupe}\
+&have_third_class=${tickRedSP.isPlatskart}\
+&have_fourth_class=${tickRedSP.isSitting}\
+&have_first_class=${tickRedSP.isLux}\
+&have_wifi=${tickRedSP.isWifi}\
+&have_express=${tickRedSP.isExpress}`;
+  */
+
+  // 1-4) priceFrom priceTo
+  if ( tickRedSP.priceRange !== undefined ) { routesURL += `&price_from=${tickRedSP.priceRange[0]}&price_to=${tickRedSP.priceRange[1]}` }
+
+
+
+  // limit and offset
+  let tickRed = state.ticketReducer; // ticket reducer head
+  let limit   = tickRed.ticketsPerPage;
+  let offset  = tickRed.offset * tickRed.ticketsPerPage;  
+  //console.log('limit', limit, 'offset', offset);
+  routesURL += `&limit=${limit}&offset=${offset}`;
+
+  console.log('routesURL=', routesURL);
+
+  // final return
+  return routesURL;
 }
-
-

@@ -70,7 +70,7 @@ export default function TicketSingle(props) {
           */}
           
           <TicketSingleSeats 
-            class={item}
+            classTitle={item}
             cntLeft={props.ticket.departure.available_seats_info[item]}
             seatPrices={filterPriceSeats(item, props.ticket.departure.price_info)}
           />

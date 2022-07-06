@@ -30,7 +30,7 @@ export default function TickSel_Slider(props) {
   const handlePageSelect = (num) => {
     dispatch( actionsTicketReducer.setsliderActive(num) );  //setsliderActive(num);
     dispatch( actionsTicketReducer.settoffset(num - 1) );
-    dispatch( fetchRoutes(storeCityFrom._id, storeCityTo._id) );
+    dispatch( fetchRoutes() ); //storeCityFrom._id, storeCityTo._id
   }
 
   const buttonLeft = () => {

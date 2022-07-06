@@ -13,9 +13,9 @@ export default function TicketSingleSeats(props) {
   return ( 
   <div>
     <div onClick={() => { setflgShow(!flgShow) }} style={{display:'flex', justifyContent:'space-around'}}> {/* border:'1px solid red',  */}
-      <div>class: {props.class} </div>
+      <div>classTitle: {props.classTitle} </div>
       <div>cntLeft: {props.cntLeft}</div>
-      <div>от ??? р.</div>
+      <div>от {props.seatPrices.bottom_price} р.</div>  {/*JSON.stringify(props.seatPrices.bottom_price)*/}
     </div>
     
     { (flgShow) 

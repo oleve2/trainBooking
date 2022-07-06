@@ -22,7 +22,7 @@ import NavigationTicket from "../components/NavigationTicket";
 import TickSel_SearchPanel from "../components/TickSel_SearchPanel";
 import TickSel_TicketsLatest from "../components/TickSel_TicketsLatest";
 // slider
-import TickSel_Slider from "../components/TickSel_Slider";
+//import TickSel_Slider from "../components/TickSel_Slider";
 
 
 const baseURL = process.env.REACT_APP_BASE_URL;
@@ -83,19 +83,22 @@ export default function PageSeatSelect(props) {
             
           { (seatDataLoaded) 
             ? <>
-            { seatData.map( (item) => {
-              return <div key={item._id}>
+              { seatData.map( (item) => {
+                return <div key={item._id}>
                 {/* Coach component */}
                 <Coach data={item} />
               </div>
             })
-            }
-            </> 
+            }            
+            </>
+            
             : <></> 
           }
         </div>
           
-        <TickSel_Slider />
+        {/* 
+        dispatch( fetchRoutes() );
+        */}
       </div>
     </div>
 

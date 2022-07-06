@@ -23,7 +23,7 @@ export default function TickSel_TicketDisplayParams(props) {
   const setPageLimitToStore = (val) => {
     dispatch( actionsTicketReducer.setticketsPerPage(val) );  // update store
     dispatch( makeCalcsAAA(storeticketsPerPage, storeTicketsSearchResult.total_count) );
-    dispatch( fetchRoutes(storeCityFrom._id, storeCityTo._id) );
+    dispatch( fetchRoutes() ); //storeCityFrom._id, storeCityTo._id
   }
 
   //

@@ -121,9 +121,9 @@ export default function TicketSearchForm(props) {
       return;
     };
     if (flgValidCityFrom && flgValidCityTo) {
-      console.log('==> search begins !!!');
+      //console.log('==> search begins !!!');
       navigate('/ticket_select');
-      dispatch(fetchRoutes(storeCityFrom._id, storeCityTo._id));
+      dispatch(fetchRoutes()); //storeCityFrom._id, storeCityTo._id
     }
   }
 
