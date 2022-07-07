@@ -11,7 +11,13 @@ import coach_platskart  from '../assets/coach/coach_platskart.png';
 import coach_coupe      from '../assets/coach/coach_coupe.png';
 import coach_lux        from '../assets/coach/coach_lux.png';
 
-// component
+import serv_conditioner from '../assets/seatsel_serv/serv_conditioner.png';
+import serv_wifi from '../assets/seatsel_serv/serv_wifi.png';
+import serv_bedsheets from '../assets/seatsel_serv/serv_bedsheets.png';
+import serv_meal from '../assets/seatsel_serv/serv_meal.png';
+
+
+// used components
 import Coach_PickSeat from './Coach_PickSeat';
 
 /*
@@ -22,9 +28,11 @@ props: data
 export default function Coach(props) {
   return (<div className="coach-wrapper">
     <div style={{maxWidth:'800px'}}>
+      {/*
       {JSON.stringify(props.data.coach)}
       <br /> <br />
       {JSON.stringify(props.data.seats)}
+      */}
     </div>
     <br />
 
@@ -62,44 +70,42 @@ export default function Coach(props) {
     </div>
     
     <div>
-      <h2>Количество билетов</h2>
+      <h2>Количество билетов: {props.data.coach.available_seats}</h2>
       <div className='ticketCntLeft'>
         <div className='ticketCntLeft_block'>
-          <div>Взрослые - 2</div>
+          <div>Взрослые - ?</div>
           <div>Можно добавить еще 2 пассажиров </div>
         </div>
-
         <div className='ticketCntLeft_block'>
-          <div>Детские - 2</div>
+          <div>Детские - ?</div>
           <div>Можно добавить еще 3 детей до 10 лет.Свое место в вагоне, как у взрослых, но дешевле в среднем на 50-65%</div>
         </div>
-
         <div className='ticketCntLeft_block'>
-          <div>Детские без места - 0</div>
+          <div>Детские без места - ?</div>
           <div></div>
         </div>
       </div>
     </div>
 
     <div>
-      <h2>Тип вагона</h2>
+      <h2>Тип вагона /{props.data.coach.class_type} </h2>
       
-      <div className='coachTypes'>
-        <div>
+      <div className='coachTypes'> 
+        <div className={(props.data.coach.class_type == 'fourth') ? 'cltype_active' : ''}>
           <img className='coachTypes__img' src={coach_sitting} alt="Сидячий" />
-          <div>Сидячий</div>
+          <div>Сидячий</div>         {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'forth')} */}
         </div>
-        <div>
+        <div  className={(props.data.coach.class_type == 'third') ? 'cltype_active' : ''}>
           <img className='coachTypes__img' src={coach_platskart} alt="Плацкарт" />
-          <div>Плацкарт</div>
+          <div>Плацкарт</div>        {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'third')} */}
         </div>
-        <div>
+        <div  className={(props.data.coach.class_type == 'second') ? 'cltype_active' : ''}>
           <img className='coachTypes__img' src={coach_coupe} alt="Купе" />
-          <div>Купе</div>
+          <div>Купе</div>            {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'second')} */}
         </div>
-        <div>
+        <div  className={(props.data.coach.class_type == 'first') ? 'cltype_active' : ''}>
           <img className='coachTypes__img' src={coach_lux} alt="Люкс" />
-          <div>Люкс</div>
+          <div>Люкс</div>            {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'first')} */}
         </div>
         
       </div>
@@ -107,45 +113,60 @@ export default function Coach(props) {
       <div>
         <h2>Информация о местах</h2>
         <div className='seatInfo-header'>
-          <div>Вагоны 07-09</div>
+          <div>Вагоны ??? {props.data.coach.name}</div>
           <div>Нумерация вагонов начинается с головы поезда</div>
         </div>
 
         <div className='seatInfo-body'>
           <div className='body-block'>
-            <div>07</div>
-            <div>вагон</div>
+            <div>вагон {props.data.coach.name}</div>
           </div>
 
           <div className='body-block'>
-            <div>Места 11</div>
-            <div>Верхние 3</div>
-            <div>Нижние 8</div>
+            <div>Места {props.data.coach.available_seats}</div>
+            <div>Верхние - ???</div>
+            <div>Нижние - ???</div>
           </div>
 
           <div className='body-block'>
             <div>Стоимость</div>
-            <div>2920</div>
-            <div>3520</div>
+            <div>lux_price={props.data.coach.price}</div>
+            <div>top_price={props.data.coach.top_price}</div>
+            <div>bottom_price={props.data.coach.bottom_price}</div>
+            <div>side_price={props.data.coach.side_price}</div>
+            <div>wifi_price={props.data.coach.wifi_price}</div>
           </div>
 
           <div className='body-block'>
-            <div>Обслуживание</div>
-            <div>
-              <img src="" alt="conditioner" />
-              <img src="" alt="wifi" />
-              <img src="" alt="bedSheets" />
-              <img src="" alt="meal" />
+            <div>Обслуживание ФПК</div>
+            <div className='wrapper-serv_img2'>
+              <img 
+                className={'serv_img2 ' + ((props.data.coach.have_air_conditioning === true) ? 'serv_img2_selected' : '')} 
+                src={serv_conditioner} alt="conditioner" 
+              />
+              <img 
+                className={'serv_img2 ' + ((props.data.coach.have_wifi === true) ? 'serv_img2_selected' : '')}
+                src={serv_wifi} alt="wifi" 
+              />
+              <img 
+                className={'serv_img2 ' + ((props.data.coach.is_linens_included === true) ? 'serv_img2_selected' : '')}
+                src={serv_bedsheets} alt="bedSheets"  
+              />
+              <img 
+                className={'serv_img2'} 
+                src={serv_meal} alt="meal" 
+              />
             </div>
           </div>
         </div>
-
       </div>
 
       <div>
-        <h4>картинка вагона с выбором мест</h4>
+        <h4>Выбор мест в вагоне</h4>
         {/* отдельный компонент с выбором мест на картинке вагона */}
-        <Coach_PickSeat />
+        <Coach_PickSeat 
+          seatsData={props.data.seats}
+        />
       </div>
     </div>
 

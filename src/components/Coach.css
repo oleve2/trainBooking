@@ -72,7 +72,9 @@
 .coachTypes {
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
+
 .coachTypes__sitting {}
 
 
@@ -96,4 +98,27 @@
   border: 1px solid brown;
 }
 
+
+.cltype_active {
+  border: 3px solid #FFA800;
+  padding: 5px;
+}
+
+
+
+
+.wrapper-serv_img2 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.serv_img2 {
+  width: 37px;
+  height: 34px;
+  border: 1px solid black;
+  border-radius: 3px;;
+}
+.serv_img2_selected {
+  background: orange;
+}
 

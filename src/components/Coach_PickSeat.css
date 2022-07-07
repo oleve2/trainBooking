@@ -1,6 +1,80 @@
 
+.cps-wrapper {
+  /*display: flex;*/
+  position: relative;
+}
+
+.img-coach {
+  margin: 0 auto;
+}
 
 
+.seat {
+  position: absolute;
+  width: 24px;
+  height: 30px;  
+  text-align: center;  
+}
+
+.seat_1 {top: 3.8em; left: 8.4em;}
+.seat_2 {top: 1.8em; left: 8.4em;}
+.seat_3 {top: 3.8em; left: 12.2em;}
+.seat_4 {top: 1.8em; left: 12.2em;}
+.seat_5 {top: 3.8em; left: 14em;}
+.seat_6 {top: 1.8em; left: 14em;}
+.seat_7 {top: 3.8em; left: 17.8em;}
+.seat_8 {top: 1.8em; left: 17.8em;}
+.seat_9 {top: 3.8em; left: 19.6em;}
+.seat_10 {top: 1.8em;left: 19.6em;}
+
+.seat_11 {top: 3.8em;left: 23.4em;}
+.seat_12 {top: 1.8em;left: 23.4em;}
+.seat_13 {top: 3.8em;left: 25.3em;}
+.seat_14 {top: 1.8em;left: 25.3em;}
+
+.seat_15 {top: 3.8em;left: 29em;}
+.seat_16 {top: 1.8em;left: 29em;}
+.seat_17 {top: 3.8em;left: 30.8em;}
+.seat_18 {top: 1.8em;left: 30.8em;}
+.seat_19 {top: 3.8em;left: 34.6em;}
+.seat_20 {top: 1.8em;left: 34.6em;}
+
+.seat_21 {top: 3.8em;left: 36.4em;}
+.seat_22 {top: 1.8em;left: 36.4em;}
+.seat_23 {top: 3.8em;left: 40.2em;}
+.seat_24 {top: 1.8em;left: 40.2em;}
+.seat_25 {top: 3.8em;left: 42em;}
+.seat_26 {top: 1.8em;left: 42em;}
+.seat_27 {top: 3.8em;left: 45.7em;}
+.seat_28 {top: 1.8em;left: 45.7em;}
+.seat_29 {top: 3.8em;left: 47.7em;}
+.seat_30 {top: 1.8em;left: 47.7em;}
+
+.seat_31 {top: 3.8em;left: 51.3em;}
+.seat_32 {top: 1.8em;left: 51.3em;}
+/* боковые койки */
+.seat_33 {top: 7em;left: 8.4em;height: 25px;width: 43px;}
+.seat_34 {top: 7em;left: 11.3em;height: 25px;width: 43px;}
+.seat_35 {top: 7em;left: 14.5em;;height: 25px;width: 43px;} 
+.seat_36 {top: 7em;left: 17.3em;height: 25px;width: 43px;}
+.seat_37 {top: 7em;left: 19.5em;height: 25px;width: 43px;}
+.seat_38 {top: 7em;left: 22.3em;height: 25px;width: 43px;}
+.seat_39 {top: 7em;left: 25.2em;height: 25px;width: 43px;}
+.seat_40 {top: 7em;left: 28.2em;height: 25px;width: 43px;}
+
+.seat_41 {top: 7em;left: 31em;height: 25px;width: 43px;}
+.seat_42 {top: 7em;left: 33.8em;height: 25px;width: 43px;}
+.seat_43 {top: 7em;left: 36.4em;height: 25px;width: 43px;}
+.seat_44 {top: 7em;left: 39.2em;height: 25px;width: 43px;}
+.seat_45 {top: 7em;left: 42em;height: 25px;width: 43px;}
+.seat_46 {top: 7em;left: 45em;height: 25px;width: 43px;}
+.seat_47 {top: 7em;left: 47.5em;height: 25px;width: 43px;}
+.seat_48 {top: 7em;left: 50.5em;height: 25px;width: 43px;}
 
 
-
+.seat_available {
+  background: #4eabf2;
+}
+.seat_not_available {
+  background: grey;
+}
