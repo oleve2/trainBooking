@@ -18,6 +18,7 @@ function App() {
 
   useEffect( () => {
     dispatch(fetchTicketsLast());
+    document.title = 'Train Booking Service';
   },[])
 
   return (

@@ -7,10 +7,13 @@ import { Link } from 'react-router-dom';
 import { tsToDate, tsToTime } from '../rtkstore/ticketReducer';
 import train_img from '../assets/train_ticketselect.png';
 import TicketSingleSeats from './TicketSingleSeats';
-//
+
+// images
+import arrToRight from '../assets/arrow_to_right.png';
+
 
 /**
- * 
+ * ticket 
  */
 export default function TicketSingle(props) {
   //
@@ -41,18 +44,23 @@ export default function TicketSingle(props) {
     </div>
 
     <div className='ticketWrp__tripInfo'>
-      <div className='block'>
-        from date: {tsToDate(props.ticket.departure.from.datetime)} <br />
-        from city: {props.ticket.departure.from.city.name} <br /> 
-        from station: {props.ticket.departure.from.railway_station_name} <br />
+      <div className='tripInfo__container tripInfo_block'>
+        <div className='tripInfo__date'>{tsToDate(props.ticket.departure.from.datetime)}</div>   {/* from date: */}
+        <div className='tripInfo__city'>{props.ticket.departure.from.city.name}</div>            {/* from city: */}
+        <div className='tripInfo__station'>{props.ticket.departure.from.railway_station_name}</div> {/* from station: */}
       </div>
       
-      <div className='block'>time of trip: {tsToTime(props.ticket.departure.duration)}</div>
+      <div className='tripInfo_block'>
+        <div>{tsToTime(props.ticket.departure.duration)}</div> {/* time of trip: */}
+        <div className='tripInfo__containerCenter'>
+          <img className='tripInfo__arrow' src={arrToRight} alt="arrow" />
+        </div>
+      </div>
 
-      <div className='block'>
-        to date: {tsToDate(props.ticket.departure.to.datetime)} <br />
-        to city: {props.ticket.departure.to.city.name} <br />
-        to station: {props.ticket.departure.to.railway_station_name} <br />
+      <div className='tripInfo__container tripInfo_block'>
+        <div className='tripInfo__date'>{tsToDate(props.ticket.departure.to.datetime)}</div>   {/* to date: */}
+        <div className='tripInfo__city'>{props.ticket.departure.to.city.name}</div>            {/* to city: */}
+        <div className='tripInfo__station'>{props.ticket.departure.to.railway_station_name}</div> {/* to station: */}
       </div>
     </div>
 
@@ -74,7 +82,7 @@ export default function TicketSingle(props) {
             cntLeft={props.ticket.departure.available_seats_info[item]}
             seatPrices={filterPriceSeats(item, props.ticket.departure.price_info)}
           />
-          <hr />
+          {/*<hr />*/}
         </div>
       } 
       )}

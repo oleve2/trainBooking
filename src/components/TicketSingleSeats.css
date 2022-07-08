@@ -1,0 +1,50 @@
+
+.tsSeats__wrapper {
+  border: 1px solid lightgrey;
+  margin: 5px 10px;
+}
+
+.tsSeats__info {
+  display: grid;
+  grid-template-columns: 1fr 20px 1fr;
+  padding: 10px;
+}
+.tsSeats__bgGrey {
+  background-color: lightgrey;
+}
+
+.tsSeats__innerWrp {
+  margin-left: 20px;
+}
+
+
+.tsSeats__class {
+  font-family: Roboto;
+  font-size: 20px;  /*16px*/
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+  color: #3E3C41;
+}
+.tsSeats__cnt {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+
+  color: #FFA800;
+}
+.tsSeats__price {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: left;
+
+  color: #2D2B2F;
+}

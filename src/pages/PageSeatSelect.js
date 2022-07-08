@@ -6,6 +6,7 @@ import { useSelector/*, useDispatch*/ } from 'react-redux';
 
 // styles (for template page layout)
 import './PageTicketSelect.css';
+import './PageSeatSelect.css';
 
 // components
 //import Navigation from "../components/Navigation"
@@ -99,6 +100,7 @@ export default function PageSeatSelect(props) {
         {/* 
         dispatch( fetchRoutes() );
         */}
+        <button className="pageSeatSelect_forwardBtn">Далее</button>
       </div>
     </div>
 

@@ -45,10 +45,11 @@
 }
 
 .TicketList__li {
-  max-height: 300px;
+  display: flex;
+  min-height: 200px;
   width: 900px;
   margin: '0px 20px 20px 0px';
-  display: flex;
+  
   /*overflow-x: scroll;*/
 }
 

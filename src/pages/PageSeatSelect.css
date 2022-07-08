@@ -1,0 +1,18 @@
+
+.pageSeatSelect_forwardBtn {
+  width: 220px;
+  height: 60px;
+  background: #FFA800;
+  border-radius: 5px;
+
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: white;
+  text-transform: uppercase;
+
+  margin: 20px 0px;
+}

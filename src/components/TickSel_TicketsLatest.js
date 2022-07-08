@@ -1,11 +1,15 @@
 // styles
 import './TickSel_TicketsLatest.css';
 
+// images
+import latest_wifi    from '../assets/seatsel_serv/latest_wifi.png';
+import latest_express from '../assets/seatsel_serv/latest_express.png';
+import latest_meal    from '../assets/seatsel_serv/latest_meal.png';
 
 export default function TickSel_TicketsLatest(props) {
   return (<>
     <div className="TSLatest block">
-    <h3 style={{marginBottom: '15px'}}>Последние билеты</h3> 
+    <h3 className="tsl__title">Последние билеты</h3> 
 
     { props.ticketsLast.map( (item, index) => {
       return <div key={index} className='latest-wrapper'>
@@ -23,20 +27,26 @@ export default function TickSel_TicketsLatest(props) {
         <div className='serv'>
           <div className='serv-wrapper'>
             <div className='serv_img'>
-              {/*<img className='serv_img serv-wifi' src="" alt="wifi" />*/}
-              wifi: {JSON.stringify(item.have_wifi)}
+              <img className={'serv_img ' + ( (item.have_wifi) ? 'serv_img_active' : '' )} src={latest_wifi} alt="wifi" />
+              {/*wifi: {JSON.stringify(item.have_wifi)} */}
             </div>
+
             <div className='serv_img'>
-              {/*<img className='serv_img serv-express' src="" alt="express" />*/}
-              expr: {JSON.stringify(item.is_express)}
+              <img className={'serv_img'} src={latest_express} alt="express" />
+              {/*xexpr: {JSON.stringify(item.is_express)} */}
             </div>
+
             <div className='serv_img'>
-              {/*<img className='serv_img serv-conditioning' src="" alt="conditioning" />*/}
-              cond: {JSON.stringify(item.have_air_conditioning)}
+              <img className={'serv_img'} src={latest_meal} alt="conditioning" />
+              {/*cond: {JSON.stringify(item.have_air_conditioning)} */}
             </div>
-            
           </div>
-          <div className='serv-minprice'>от {item.min_price} р.</div>
+
+          <div className='serv-minprice'>
+            <span className="serv-minprice__from">от </span>
+            <span className="serv-minprice__sum">{item.min_price} </span>
+            <span className="serv-minprice__currency">р.</span>
+          </div>
         </div>
       </div>
     }) }

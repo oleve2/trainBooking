@@ -5,6 +5,19 @@
 
 /* --------------------------------- */
 
+.tsl__title {
+  font-family: Roboto;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 35px;
+  letter-spacing: 0em;
+  text-align: left;
+
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+
 
 .place {
   display: flex;
@@ -12,12 +25,32 @@
   margin-bottom: 20px;
 }
 .place-from {
-  border: 1px solid blue;
+  /*border: 1px solid blue;*/
 }
 .place-to {
-  border: 1px solid blue;
+  /*border: 1px solid blue;*/
 }
 
+.city {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+  text-transform: capitalize;
+}
+.station {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+  color: #928F94;
+}
 
 .serv {
   display: flex;
@@ -25,11 +58,15 @@
 }
 .serv-wrapper {
   display: flex;
-  border: 1px solid red;
+  align-items: center;
+  /*border: 1px solid red;*/
 }
 
 .serv_img {
   margin-right: 10px;
+}
+.serv_img_active {
+  background-color: orange;
 }
 
 .latest-wrapper {
@@ -37,3 +74,31 @@
   margin: 0px 0px 10px 0px;
   padding: 5px;
 }
+
+
+.serv-minprice__from {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: right;
+
+  color: #928F94;    
+}
+.serv-minprice__sum {
+  font-family: Roboto;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 42px;
+  letter-spacing: 0em;
+  text-align: left;
+
+  color: #FFA800;
+}
+.serv-minprice__currency {
+  color: #928F94;
+}
+
+
+
