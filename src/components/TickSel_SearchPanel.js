@@ -40,6 +40,9 @@ export default function TickSel_SearchPanel(props) {
   const [obratnoToggle, setObratnoToggle] = useState(false)
 
   // store (params and changers)
+  const storeDateDepart = useSelector( (store) => store.ticketReducer.searchParams.dateDepart);
+  const storeDateReturn = useSelector( (store) => store.ticketReducer.searchParams.dateReturn);
+
   const storeisKupe       = useSelector( (store) => store.ticketReducer.searchParams.isKupe );
   const storeisPlatskart  = useSelector( (store) => store.ticketReducer.searchParams.isPlatskart );
   const storeisSitting    = useSelector( (store) => store.ticketReducer.searchParams.isSitting );
@@ -51,7 +54,19 @@ export default function TickSel_SearchPanel(props) {
   const storetudaDepartDateRange    = useSelector( (store) => store.ticketReducer.searchParams.tudaDepartDateRange );
   const storetudaArrivDateRange      = useSelector( (store) => store.ticketReducer.searchParams.tudaArrivDateRange );
 
+  // set DateDepart
+  const clickDateDepart = (val) => {
+    console.log(`DateDepart = ${val}`);
+    dispatch(actionsTicketReducer.setdateDepart(val)) 
+  }
 
+  // set DateReturn
+  const clickDateReturn = (val) => {
+    console.log(`DateReturn = ${val}`);
+    dispatch(actionsTicketReducer.setdateReturn(val)) 
+  }  
+
+  //
   const changeisKupe          = (val) => { 
     console.log('changeisKupe');
     dispatch( actionsTicketReducer.setisKupe(val) );
@@ -109,11 +124,17 @@ export default function TickSel_SearchPanel(props) {
       <div className="tsparamBlock">
         <div className="trip_date">
           <label className="trip_date__label">Дата поездки</label>
-          <input className="trip_date__input" type="date" />
+          <input className="trip_date__input" type="date" 
+            value={storeDateDepart}
+            onChange={(e) => { clickDateDepart(e.target.value) } }
+          />
         </div>
         <div className="trip_date">
           <label className="trip_date__label">Дата возвращения</label>
-          <input className="trip_date__input" type="date" />
+          <input className="trip_date__input" type="date" 
+            value={storeDateReturn}
+            onChange={(e) => { clickDateReturn(e.target.value) } }
+          />
         </div>
       </div>
       <hr className="hrLine"/>

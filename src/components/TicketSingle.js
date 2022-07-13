@@ -1,23 +1,33 @@
 
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; 
+import { useDispatch } from 'react-redux';
+
+// styles
 import './TicketSingle.css';
 
-import { useState } from 'react';
-import { Link } from 'react-router-dom'; 
-
-import { tsToDate, tsToTime } from '../rtkstore/ticketReducer';
+// images
 import train_img from '../assets/train_ticketselect.png';
 import TicketSingleSeats from './TicketSingleSeats';
-
-// images
 import arrToRight from '../assets/arrow_to_right.png';
+
+// reducer
+import { tsToDate, tsToTime } from '../rtkstore/ticketReducer';
+import { actionsTicketReducer } from '../rtkstore/ticketReducer'; 
 
 
 /**
- * ticket 
- */
+ * props.ticket 
+*/
+
+//
 export default function TicketSingle(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
   //
   const [lnkSeats, setlnkSeats] = useState(`/seat_select/${props.ticket.departure._id}`)
+  
   //
   const filterPriceSeats = (priceLabel, seats) => {
     for (let keyPrice of Object.keys(seats)) {
@@ -87,7 +97,31 @@ export default function TicketSingle(props) {
       } 
       )}
 
-      <Link className='button_seats' to={lnkSeats}>Выбрать места</Link>
+      <button className='button_seats' 
+        onClick={() => {
+          let d = {
+            'train_id':       props.ticket.departure._id,
+            'train_name':     props.ticket.departure.train.name,
+            'from_date':      tsToDate(props.ticket.departure.from.datetime),
+            'from_city':      props.ticket.departure.from.city.name,
+            'from_station':   props.ticket.departure.from.railway_station_name,
+            'trip_dutation':  tsToTime(props.ticket.departure.duration),
+            'to_date':        tsToDate(props.ticket.departure.to.datetime),
+            'to_city':        props.ticket.departure.to.city.name,
+            'to_station':     props.ticket.departure.to.railway_station_name,
+            /*
+            'available_seats_info': props.ticket.departure.available_seats_info,
+            'price_info':     props.ticket.departure.price_info,
+            */
+          } 
+          //console.log('d=', d);
+          //
+          dispatch( actionsTicketReducer.setpurchaseTrain(d) );
+          // 
+          navigate(lnkSeats);
+        }}
+      >Выбрать места</button>
+      {/*<Link className='button_seats' to={lnkSeats}>Выбрать места</Link>*/}
     </div>
   </div>
   

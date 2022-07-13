@@ -78,3 +78,7 @@
 .seat_not_available {
   background: grey;
 }
+.seat_selected {
+  background: greenyellow;
+}
+

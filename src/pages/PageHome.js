@@ -1,28 +1,26 @@
 
 //import Navigation from "../components/Navigation"
 
-import user from '../assets/userpng.png';
+// images
 import ekValn from '../assets/valnova_ek.png';
 import evgStryk from '../assets/strykalo_evg.png';
-
 import hiw1 from '../assets/hiw_img1.png';
 import hiw2 from '../assets/hiw_img2.png';
 import hiw3 from '../assets/hiw_img3.png';
 import sliderButts from '../assets/slider_buttons.png';
 
+// styles
+import './PageHome.css';
+
+// components
+import TicketSearchForm from "../components/TicketSearchForm";
 import Footer from '../components/Footer';
 import HeaderLogoNavi from '../components/HeaderLogoNavi';
 
-
-
-import './PageHome.css';
-
-import TicketSearchForm from "../components/TicketSearchForm";
-
+//
 export default function PageHome(props) {
   return (
   <>
-
   <div className="homeBlock logo">
     <HeaderLogoNavi />
 

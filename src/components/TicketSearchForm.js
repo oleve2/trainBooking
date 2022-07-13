@@ -1,8 +1,12 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './TicketSearchForm.css';
 import { useDispatch, useSelector } from 'react-redux';
 
+// style
+import './TicketSearchForm.css';
+
+// store
 import { actionsTicketReducer } from '../rtkstore/ticketReducer';
 import { fetchRoutes } from '../rtkstore/ticketReducer';
 
@@ -16,6 +20,7 @@ const baseURL = process.env.REACT_APP_BASE_URL;
  * isFixed: true or false (может ли форма изменять свойство 'direction' если меняются параметры window )
 */
 
+//
 export default function TicketSearchForm(props) {
   // standart hooks
   const navigate = useNavigate();
@@ -27,6 +32,9 @@ export default function TicketSearchForm(props) {
   // store 
   const storeCityFrom = useSelector( (store) => store.ticketReducer.searchParams.cityFrom);
   const storeCityTo   = useSelector( (store) => store.ticketReducer.searchParams.cityTo);
+  
+  const storeDateDepart = useSelector( (store) => store.ticketReducer.searchParams.dateDepart);
+  const storeDateReturn = useSelector( (store) => store.ticketReducer.searchParams.dateReturn);
 
   // cities
   const [cityFromStr, setcityFromStr] = useState( (storeCityFrom.name == undefined) ? '' : storeCityFrom.name ); //''
@@ -45,12 +53,12 @@ export default function TicketSearchForm(props) {
   
 
   // dates
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const [dateDepart, setdateDepart] = useState(storeDateDepart);
+  const [dateReturn, setdateReturn] = useState(storeDateReturn);
 
   // ticket form direction to display
   const [dir, setDir] = useState(props.direction); // 'column' or 'row'
-  const [isFixed2, setisFixed2] = useState(props.isFixed);
+  const [isFixed2, setisFixed2] = useState(props.isFixed); // should a form resize with window or not
 
   const changeDirection = () => {
      (dir === 'column') ? setDir('row') : setDir('column'); 
@@ -75,7 +83,8 @@ export default function TicketSearchForm(props) {
     setcityToStr(e.target.value) 
   }
 
-  // 
+  // ----------------------------------------
+  // select city from
   const clickCityFromDroplistDiv = (item) => {
     setcityFromStr(item.name);
     storeSetCityFrom(item); // set cityFrom to store
@@ -84,7 +93,7 @@ export default function TicketSearchForm(props) {
     setcityFromHover(false);
   }
 
-  // 
+  // select city to
   const clickCityToDroplistDiv = (item) => {
     setcityToStr(item.name);
     storeSetCityTo(item); // set cityTo to store
@@ -92,6 +101,19 @@ export default function TicketSearchForm(props) {
     setflgCityToShow(false);
     setcityToHover(false);
   }  
+
+  // ----------------------------------------
+  // set DateDepart
+  const clickDateDepart = (val) => {
+    console.log(`DateDepart = ${val}`);
+    dispatch(actionsTicketReducer.setdateDepart(val)) 
+  }
+
+  // set DateReturn
+  const clickDateReturn = (val) => {
+    console.log(`DateReturn = ${val}`);
+    dispatch(actionsTicketReducer.setdateReturn(val)) 
+  }
 
 
   // https://erikmartinjordan.com/start-search-user-not-typing
@@ -152,6 +174,12 @@ export default function TicketSearchForm(props) {
     return () => clearTimeout(timer2);
   }, [cityToStr])
 
+  // dateDepart + dateReturn
+  useEffect( () => {
+    setdateDepart(storeDateDepart);
+    setdateReturn(storeDateReturn);
+  },[storeDateDepart, storeDateReturn])
+
 
   // пересчет direction
   useEffect( () => {
@@ -184,6 +212,7 @@ export default function TicketSearchForm(props) {
       <div className={(dir === 'column' ? 'dirColumn' : 'dirRow')}>
         <div style={{height: '100px', margin: '40px'}}>
           <label>Направление</label>
+
           <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
             <div
               onFocus={ () => {setflgCityFromShow(true)}} 
@@ -195,7 +224,7 @@ export default function TicketSearchForm(props) {
                   setcityFromHover(false);
                 }
               }}
-            >
+            > {/* Город Откуда */}
               <input className="FInput" value={cityFromStr} 
                 onChange={handleCityFromInputChange} 
               />
@@ -228,7 +257,7 @@ export default function TicketSearchForm(props) {
                   setcityToHover(false);
                 }
               }}
-            >
+            > {/* Город Куда */}
               <input className="FInput" value={cityToStr}
                 onChange={handleCityToInputChange}  
               />
@@ -253,11 +282,22 @@ export default function TicketSearchForm(props) {
         
         {/* 2 */}
         <div style={{height: '100px', margin: '40px'}}>
-          <label>Дата Откуда</label> 
+          <label>Даты поездки</label> 
+          
           <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
-            <input className="FInput" type="date" onChange={(e) => {setDateFrom(e.target.value)}} />
+            {/* дата отбытия Туда */ }
+            <input className="FInput" type="date" 
+              value={dateDepart}
+              onChange={(e) => { clickDateDepart(e.target.value) }} 
+            />
+
             <img src="" alt="switch" className='tsf_img' style={{width: '50px', height:'50px'}} onClick={changeDirection} />
-            <input className="FInput" type="date" onChange={(e) => {setDateTo(e.target.value)}} />    
+            
+            {/* должно быть - дата обратной поездки, но это неточно ... */ }
+            <input className="FInput" type="date" 
+              value={dateReturn}
+              onChange={(e) => { clickDateReturn(e.target.value) }} 
+            />    
           </div>
         </div>
 

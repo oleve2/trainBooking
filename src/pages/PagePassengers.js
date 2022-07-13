@@ -9,14 +9,18 @@ import TicketSearchForm from "../components/TicketSearchForm"
 import Footer from "../components/Footer";
 import NavigationProgress from "../components/NavigationProgress";
 
+import TripDetails from "../components/TripDetails";
+import PassengerAddForm from "../components/PassengerAddForm";
+
+
 //
-export default function PagePayment(props) {
+export default function PagePassengers(props) {
   const dispatch = useDispatch();
 
   useEffect( () => {
-    dispatch( actionsTicketReducer.setnavigationProgressActive(3) );
+    dispatch( actionsTicketReducer.setnavigationProgressActive(2) );
   },[])
-  
+
   return (<>
   <div className="TSHeader">
     <HeaderLogoNavi/>
@@ -29,8 +33,15 @@ export default function PagePayment(props) {
   </div>  
 
   <div className="TSBody">
-    page payment
+    <TripDetails />
 
+    <div>
+      <PassengerAddForm />
+
+      <div>Форма добавления пассажира</div>
+
+      <button>Добавить пассажира</button>
+    </div>
   </div>
 
 
@@ -40,3 +51,5 @@ export default function PagePayment(props) {
   </>
   )
 }
+
+

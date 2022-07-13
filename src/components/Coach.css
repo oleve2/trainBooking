@@ -1,4 +1,7 @@
 
+
+
+
 /*-------------------------*/
 .CoachSelHeader {
   display: flex;
@@ -45,6 +48,9 @@
   margin-bottom: 20px;
   padding: 20px;
 }
+.coach-wrapper-div {
+  margin-bottom: 20px;
+}
 
 .trainInfo {
   display: flex;
@@ -75,7 +81,11 @@
   align-items: center;
 }
 
-.coachTypes__sitting {}
+.coachTypes__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+}
 
 
 
@@ -93,9 +103,23 @@
 }
 
 .body-block {
-  height: 160px;
-  min-width: 190px;
+  min-height: 160px;
+  min-width: 240px;
   border: 1px solid brown;
+}
+.body-block__Info_SeatCntPrice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.body-block__Info_div {
+  margin: 5px;
+  padding: 5px;
+}
+.body-block__Info_title {
+  margin: 5px;
+  padding: 5px;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 
@@ -116,7 +140,8 @@
   width: 37px;
   height: 34px;
   border: 1px solid black;
-  border-radius: 3px;;
+  border-radius: 3px;
+  padding: 5px;
 }
 .serv_img2_selected {
   background: orange;

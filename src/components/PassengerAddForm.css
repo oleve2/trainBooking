@@ -1,0 +1,62 @@
+
+.psngrForm-wrapper {
+  border: 1px solid black;
+  width: 600px;
+  margin: 10px;
+}
+
+.psngrForm__headWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.psngrForm__head {
+  display: flex;
+  align-items: center;
+}
+.psngrForm__body {
+  
+}
+.psngrForm__body_hide {
+  display: none
+}
+
+.psngrForm__showhideImg {
+  width: 32px;
+  height: 32px;
+  margin: 0px 20px;
+}
+
+
+.psngrForm__section {
+  display: flex;
+  border: 1px solid red;
+  margin: 10px;
+  padding: 5px;
+}
+
+.gender {
+  border: 1px solid blue;
+  margin: 5px;
+  padding: 5px;
+}
+.gender_active { 
+  background-color: orange;
+}
+
+.birthDate {
+  margin: 5px;
+  padding: 5px;  
+}
+
+.psngrForm__delete {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+
+.cl_21 {
+  display: grid;
+  grid-template-rows: 30px 1fr;
+}

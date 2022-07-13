@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { cloneDeep } from 'lodash';
+
 
 //const baseURL = 'https://fe-diplom.herokuapp.com';
 const baseURL = process.env.REACT_APP_BASE_URL;   //'http://localhost:3001';
@@ -15,11 +17,23 @@ const initialState = {
   ticketsPerPage: 5,
   ticketsPerPageList: [5,10,15],
   offset: 0,
-
+  
   cntBlocks: 0,
   sliderBlockList: [],
   sliderActive: 1,
 
+  // NavigationProgress
+  navigationProgressList: [
+    {id: 1, name: 'Билеты'},
+    {id: 2, name: 'Пассажиры'},
+    {id: 3, name: 'Оплата'},
+    {id: 4, name: 'Проверка'},
+  ],
+  navigationProgressActive: 1,
+
+  // purchase information
+  purchaseTrain: {},
+  purchaseSeats: [],
 
   // -------------------------
   searchParams: {
@@ -28,8 +42,8 @@ const initialState = {
     cityTo: '', //[],
 
     // даты для обязаельных
-    dateFrom: '',
-    dateTo: '',
+    dateDepart: '',
+    dateReturn: '',
 
     // прочее
     isKupe: false,
@@ -54,8 +68,8 @@ const ticketReducer = createSlice({
     setCityFrom(state, action) { state.searchParams.cityFrom = action.payload },
     setCityTo(state, action) { state.searchParams.cityTo = action.payload },
     // dates
-    setDateFrom(state, action) { state.searchParams.dateFrom = action.payload },
-    setDateTo(state, action) { state.searchParams.dateTo = action.payload },
+    setdateDepart(state, action) { state.searchParams.dateDepart = action.payload },
+    setdateReturn(state, action) { state.searchParams.dateReturn = action.payload },
 
     // API fetch results -------------------------------
     // Last
@@ -103,7 +117,17 @@ const ticketReducer = createSlice({
     // tudaDepartDateRange
     settudaDepartDateRange(state, action) { state.searchParams.tudaDepartDateRange = action.payload },
     // tudaArrivDateRange
-    settudaArrivDateRange(state, action) { state.searchParams.tudaArrivDateRange = action.payload }
+    settudaArrivDateRange(state, action) { state.searchParams.tudaArrivDateRange = action.payload },
+
+    // navigationProgress
+    setnavigationProgressActive(state, action) { state.navigationProgressActive = action.payload },
+
+    // purchase information  -------------------------------
+    // train info
+    setpurchaseTrain(state, action) { state.purchaseTrain = action.payload },
+    // seats info
+    setpurchaseSeats(state, action) { state.purchaseSeats = action.payload }
+
   }
 })
 
@@ -129,8 +153,8 @@ export const fetchRoutes = () => async (dispatch, getState) => { //idFrom, idTo
   const stt = getState();
   //console.log('stt=', stt);
   //console.log(`thunk => perPage=${stt.ticketReducer.ticketsPerPage}, offset=${stt.ticketReducer.offset}`);
-  let limit = stt.ticketReducer.ticketsPerPage;
-  let offset = stt.ticketReducer.offset * stt.ticketReducer.ticketsPerPage;
+  //let limit = stt.ticketReducer.ticketsPerPage;
+  //let offset = stt.ticketReducer.offset * stt.ticketReducer.ticketsPerPage;
 
 
   // 02-1) build url from data in store
@@ -219,6 +243,37 @@ export const updatetudaArrivDateRange = (val) => async (dispatch) => {
 }
 
 
+// [work with seats]
+// переименовать!!!
+export const SeatsDoAction = (item) => async (dispatch, getState) => {
+  //console.log('reducer item=', item); // {coachName: 'ЛД-74', seatIndex: 1, selected: true/false}
+  
+  // get purchase seat list from store
+  const stt = getState();
+  let psList = stt.ticketReducer.purchaseSeats;
+  let psListDC = cloneDeep(psList);
+  //console.log('reducer psListDC=', psListDC);
+  
+  // case add (selected = true)
+  if (item.selected === true) {
+    psListDC.push( item );
+    dispatch( actionsTicketReducer.setpurchaseSeats(psListDC) );
+  }
+  
+  // case remove (selected = false)
+  if (item.selected === false) {
+    let psListFiltered = psListDC.filter( (it) => {
+      return (  (it.coachName !== item.coachName) || (it.seatIndex !== item.seatIndex));
+    })
+    //console.log('psListFiltered new = ', psListFiltered);
+    dispatch( actionsTicketReducer.setpurchaseSeats(psListFiltered) );
+  }
+}
+
+
+
+
+// ====================================================================================
 // support functions --------------------------------------
 //
 export const tsToDate = (ts) => {
@@ -255,10 +310,10 @@ export const buildRoutesQuery = (state) => {
     routesURL += `/routes?from_city_id=${tickRedSP.cityFrom._id}&to_city_id=${tickRedSP.cityTo._id}`;
   }
   
-  // 1-2) dateFrom dateTo
-  //console.log('dateFrom=', tickRedSP.dateFrom, 'dateTo', tickRedSP.dateTo);
-  if ( tickRedSP.dateFrom != '') { routesURL += `&date_start=${tickRedSP.dateFrom}` }
-  if ( tickRedSP.dateTo   != '') { routesURL += `&date_end=${tickRedSP.dateTo}` }
+  // 1-2) dateDepart dateReturn
+  //console.log('dateDepart=', tickRedSP.dateDepart, 'dateReturn', tickRedSP.dateReturn);
+  if ( tickRedSP.dateDepart != '') { routesURL += `&date_start=${tickRedSP.dateDepart}` }
+  if ( tickRedSP.dateReturn != '') { routesURL += `&date_end=${tickRedSP.dateReturn}` }
   
   // 1-3) is-flags
   /*console.log('isKupe', tickRedSP.isKupe, 'isPlatskart', tickRedSP.isPlatskart, 

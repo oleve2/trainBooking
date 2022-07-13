@@ -14,9 +14,9 @@ export default function PagePayment(props) {
   const dispatch = useDispatch();
 
   useEffect( () => {
-    dispatch( actionsTicketReducer.setnavigationProgressActive(3) );
+    dispatch( actionsTicketReducer.setnavigationProgressActive(4) );
   },[])
-  
+
   return (<>
   <div className="TSHeader">
     <HeaderLogoNavi/>
@@ -29,7 +29,7 @@ export default function PagePayment(props) {
   </div>  
 
   <div className="TSBody">
-    page payment
+    page checkout
 
   </div>
 
@@ -40,3 +40,4 @@ export default function PagePayment(props) {
   </>
   )
 }
+

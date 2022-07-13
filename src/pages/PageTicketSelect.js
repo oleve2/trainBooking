@@ -1,20 +1,20 @@
 
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { actionsTicketReducer } from "../rtkstore/ticketReducer";
 
 // styles
 import './PageTicketSelect.css';
 
 // components
-//import Navigation from "../components/Navigation"
 import TicketSearchForm from "../components/TicketSearchForm"
 import Footer from "../components/Footer";
 import HeaderLogoNavi from "../components/HeaderLogoNavi";
 import TicketSingle from "../components/TicketSingle";
+import NavigationProgress from "../components/NavigationProgress";
 
-import NavigationTicket from "../components/NavigationTicket";
-
-// left side pandels
+// left side panels
 import TickSel_SearchPanel from "../components/TickSel_SearchPanel";
 import TickSel_TicketsLatest from "../components/TickSel_TicketsLatest";
 // slider
@@ -24,11 +24,10 @@ import TickSel_TicketDisplayParams from "../components/TickSel_TicketDisplayPara
 
 
 // custom window resize hook  // https://stackoverflow.com/questions/36862334/get-viewport-window-height-in-reactjs
-import useWindowDimensions from '../hooks/useWindowDimensions';
+//import useWindowDimensions from '../hooks/useWindowDimensions';
 
 // store - to update ticketsPerPage
-import { actionsTicketReducer } from "../rtkstore/ticketReducer";
-import { makeCalcsAAA } from "../rtkstore/ticketReducer";
+//import { makeCalcsAAA } from "../rtkstore/ticketReducer";
 
 // -------------------------------------
 export default function PageTicketSelect(props) {
@@ -38,15 +37,22 @@ export default function PageTicketSelect(props) {
   const storeTicketsLast = useSelector( (store) => store.ticketReducer.ticketsLast);
   const storeTicketsSearchResult = useSelector( (store) => store.ticketReducer.ticketsSearchResult);
 
-  const {height, width} = useWindowDimensions();
-
-  // onScroll={handScroll}
-  const handScroll = (e) => { console.log(e.target.scrollLeft) }
+  //const {height, width} = useWindowDimensions();
+  //onScroll={handScroll}
+  //const handScroll = (e) => { console.log(e.target.scrollLeft) }
 
   // кнопки показывать по
   const storeticketsPerPage = useSelector( (store) => store.ticketReducer.ticketsPerPage )
   const storeticketsPerPageList  = useSelector( (store) => store.ticketReducer.ticketsPerPageList )
   //const [ticketsByPageLimitActive, setticketsByPageLimitActive] = useState(storeticketsPerPage);
+
+
+  useEffect( () => {
+    dispatch( actionsTicketReducer.setnavigationProgressActive(1) );
+    dispatch( actionsTicketReducer.setpurchaseTrain({}) );
+    dispatch( actionsTicketReducer.setpurchaseSeats([]) );
+  },[])
+  
 
   //
   return (<>
@@ -58,7 +64,7 @@ export default function PageTicketSelect(props) {
         <TicketSearchForm  direction='row' isFixed={false}/>
       </div>
 
-      <NavigationTicket />
+      <NavigationProgress />
     </div>
 
     <div className="TSBody">
