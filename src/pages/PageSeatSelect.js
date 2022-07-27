@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionsTicketReducer } from "../rtkstore/ticketReducer";
 
+import { cloneDeep } from "lodash";
+
 // styles
 import './PageTicketSelect.css';
 import './PageSeatSelect.css';
@@ -21,8 +23,9 @@ import TickSel_TicketsLatest  from "../components/TickSel_TicketsLatest";
 // slider
 //import TickSel_Slider from "../components/TickSel_Slider";
 
-// fetch url
-const baseURL = process.env.REACT_APP_BASE_URL;
+// store
+import { fetchSeats } from "../rtkstore/ticketReducer";
+
 
 
 /*
@@ -31,7 +34,7 @@ Components:
 */
 
 //
-export default function PageSeatSelect(props) {
+export default function PageSeatSelect() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,12 +42,13 @@ export default function PageSeatSelect(props) {
   const storeTicketsLast = useSelector( (store) => store.ticketReducer.ticketsLast);
   const storepurchaseTrain = useSelector( (store) => store.ticketReducer.purchaseTrain);
   const storepurchaseSeats = useSelector( (store) => store.ticketReducer.purchaseSeats);
+  const storeseatsSearchResult = useSelector( (store) => store.ticketReducer.seatsSearchResult);
 
   // train id from url
   const {trainId} = useParams();
   //
   const [seatData, setseatData] = useState([]);
-  const [seatDataLoaded, setseatDataLoaded] = useState(false);
+  //const [seatDataLoaded, setseatDataLoaded] = useState(storeflgSeatsLoaded);
 
   // click Forward
   const doClickForward = () => {
@@ -59,24 +63,20 @@ export default function PageSeatSelect(props) {
 
   // page initialization
   useEffect( () => {
-    async function getData(trainId) {
-      let url = `${baseURL}/routes/${trainId}/seats`;
-      //console.log(`url=${url}`);
-      let resp = await fetch(url);
-      let data = await resp.json();
-      setseatData(data);
-      setseatDataLoaded(true);
-    };
-    
-    //
-    if (storepurchaseTrain.train_id !== undefined) {
+    if ((storepurchaseTrain.train_id !== undefined) && (storepurchaseTrain.train_id !== '')) {
       window.scrollTo(0,0); // scroll up
-      getData(trainId);     // fetch data
+      dispatch( fetchSeats(trainId) );
       dispatch( actionsTicketReducer.setnavigationProgressActive(1) );
     } else {
       navigate('/ticket_select');
     }
-  },[])
+  },[trainId])
+
+  useEffect( () => {
+    let seats2 = cloneDeep(storeseatsSearchResult);
+    setseatData(seats2);
+  },[storeseatsSearchResult])
+
 
 
   // 
@@ -102,11 +102,12 @@ export default function PageSeatSelect(props) {
       <div> 
         <div>
           <div>
-            train ID: {trainId}
+            train ID: {trainId} <br />
+            {/*JSON.stringify(seatData)*/}
           </div>
           
           {/**/}
-          { (seatDataLoaded) 
+          { (seatData.length > 0) 
             ? <>
               { seatData.map( (item, index) => {
                 return <div key={index}>

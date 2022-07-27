@@ -16,9 +16,15 @@ import './PageHome.css';
 import TicketSearchForm from "../components/TicketSearchForm";
 import Footer from '../components/Footer';
 import HeaderLogoNavi from '../components/HeaderLogoNavi';
+import { useEffect } from 'react';
 
 //
-export default function PageHome(props) {
+export default function PageHome() {
+
+  useEffect( () => {
+    window.scrollTo(0,0)
+  },[])
+
   return (
   <>
   <div className="homeBlock logo">
@@ -34,7 +40,7 @@ export default function PageHome(props) {
     </div>
   </div>
   
-  <div className="homeBlock aboutUs">
+  <div className="homeBlock aboutUs" id="aboutUs">
     <div className="aboutUs_wrapper">
       <h3 style={{textTransform: 'uppercase'}}>О нас</h3>
         <ul className="aboutUs_ul">
@@ -46,7 +52,7 @@ export default function PageHome(props) {
   </div>
 
   {/* как это работает */}
-  <div className="homeBlock howItWorks">
+  <div className="homeBlock howItWorks" id="howItWorks">
     <div className="howItWorks__header">
       <div className="hiwHead__logo">Как это работает</div>
       {/*<div>Узнать больше</div>*/}
@@ -70,7 +76,7 @@ export default function PageHome(props) {
   </div>
 
   {/* Отзывы */}
-  <div className="homeBlock reviews">
+  <div className="homeBlock reviews" id="reviews">
     <div className='reviews_headtext'>Отзывы</div>
     <ul className="reviews_ul">
       <li className="reviewsOne">

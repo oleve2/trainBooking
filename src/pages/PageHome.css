@@ -17,7 +17,6 @@
   max-width: 1920px;
   width: 100%;
   height: 985px;
-  /*border: 1px solid black;  */
 }
 
 .logo {
@@ -39,13 +38,6 @@
   height: 400px;
 }
 
-.footer {
-  height: fit-content; /*height: 519px;*/
-  background: lightgrey;
-  display: grid;
-  grid-template-rows: 1fr 60px;
-}
-
 
 .logo_footer {
   display: flex;
@@ -53,7 +45,7 @@
   align-items: center;
   min-height: 500px;
 }
-.logo_footer__slogan   {
+.logo_footer__slogan {
   font-family: Roboto;
   font-size: 72px;
   font-weight: 100;
@@ -68,12 +60,7 @@
 }
 
 
-.logo_footer__form {
-  /*color: white;
-  font-size: 18px;*/
-}
-
-
+.logo_footer__form {}
 
 
 /* about us ------------------------------- */
@@ -240,7 +227,3 @@
   letter-spacing: 0em;
   text-align: left;
 }
-
-
-
-

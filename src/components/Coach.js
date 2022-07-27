@@ -1,3 +1,4 @@
+import React from 'react';
 
 // styles
 import './Coach.css';
@@ -94,7 +95,7 @@ export default function Coach(props) {
 
       <div style={{display:'flex'}}>
         <img src={clock} alt="картинка часов" style={{margin:'5px 10px', height:'30px', width:'30px'}} />
-        <div style={{display:'flex', alignItems:'center'}}> {storepurchaseTrain.trip_dutation}
+        <div style={{display:'flex', alignItems:'center'}}> {storepurchaseTrain.trip_duration}
           {/*<div></div> X часов*/}
           {/*<div></div> Y минут*/}
         </div>
@@ -125,22 +126,22 @@ export default function Coach(props) {
       <h2>Тип вагона ({props.data.coach.class_type})</h2>
       
       <div className='coachTypes'> 
-        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type == 'fourth') ? 'cltype_active' : '')}>
+        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type === 'fourth') ? 'cltype_active' : '')}>
           <img className='coachTypes__img' src={coach_sitting} alt="Сидячий" />
           <div>Сидячий</div>         {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'forth')} */}
         </div>
 
-        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type == 'third') ? 'cltype_active' : '')}>
+        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type === 'third') ? 'cltype_active' : '')}>
           <img className='coachTypes__img' src={coach_platskart} alt="Плацкарт" />
           <div>Плацкарт</div>        {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'third')} */}
         </div>
 
-        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type == 'second') ? 'cltype_active' : '')}>
+        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type === 'second') ? 'cltype_active' : '')}>
           <img className='coachTypes__img' src={coach_coupe} alt="Купе" />
           <div>Купе</div>            {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'second')} */}
         </div>
 
-        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type == 'first') ? 'cltype_active' : '')}>
+        <div className={'coachTypes__wrapper ' + ((props.data.coach.class_type === 'first') ? 'cltype_active' : '')}>
           <img className='coachTypes__img' src={coach_lux} alt="Люкс" />
           <div>Люкс</div>            {/* // {props.data.coach.class_type} {JSON.stringify(props.data.coach.class_type == 'first')} */}
         </div>
@@ -155,7 +156,7 @@ export default function Coach(props) {
 
         <div className='seatInfo-body'>
           <div className='body-block'>
-            <div className='body-block__Info_title'>вагон {props.data.coach.name}</div>
+            <div className='body-block__Info_title'>Вагон {props.data.coach.name}</div>
           </div>
 
           <div className='body-block'>
@@ -165,31 +166,40 @@ export default function Coach(props) {
             { (props.data.coach.price !== 0) ? <div className='body-block__Info_SeatCntPrice'>
               <div className='body-block__Info_div'>lux_cnt=???</div>
               <div className='body-block__Info_div'>lux_price={props.data.coach.price}</div>
-            </div> : <></>}
+            </div> 
+            : <></>
+            }
             
             {/* top_price */}
             { (props.data.coach.top_price !== 0) ? <div className='body-block__Info_SeatCntPrice'>
               <div className='body-block__Info_div'>Верхние ???</div>
               <div className='body-block__Info_div'>{props.data.coach.top_price} р.</div>
-            </div> : <></>}
+            </div> 
+            : <></>}
             
             {/* bottom_price */}
             { (props.data.coach.top_bottom_priceprice !== 0) ? <div className='body-block__Info_SeatCntPrice'>
               <div className='body-block__Info_div'>Нижние ???</div>
               <div className='body-block__Info_div'>{props.data.coach.bottom_price} р.</div>
-            </div> : <></>}
+            </div> 
+            : <></>
+            }
             
             {/* side_price */}
             { (props.data.coach.side_price !== 0) ? <div className='body-block__Info_SeatCntPrice'>
               <div className='body-block__Info_div'>Боковые ???</div>
               <div className='body-block__Info_div'>{props.data.coach.side_price} р.</div>
-            </div> : <></>}
+            </div> 
+            : <></>
+            }
             
             {/* wifi_price */}
             { (props.data.coach.wifi_price !== 0) ? <div className='body-block__Info_SeatCntPrice'>
               <div className='body-block__Info_div'>WIFI</div>
               <div className='body-block__Info_div'>{props.data.coach.wifi_price} р.</div>
-            </div> : <></>}            
+            </div> 
+            : <></>
+            }            
           </div>
 
           <div className='body-block'>

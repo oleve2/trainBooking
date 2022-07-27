@@ -1,6 +1,6 @@
 
 .block {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
 }
 
 /* (+) */
@@ -16,7 +16,7 @@
 /* (+) */
 .TSBody {
   min-height: 900px;
-  width: 97%;
+  width: 80%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 3fr;  
@@ -33,7 +33,8 @@
 .TicketList__info {
   display: flex;
   justify-content: space-evenly;
-  border: 1px solid red;
+  max-width: 1000px;
+  /*border: 1px solid red;*/
 }
 
 .TicketList__ul {
@@ -55,7 +56,7 @@
 
 /* ticket limit 5 10 15 */
 .ticketLimit {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   margin: 0px 10px;
   padding: 5px;
 }

@@ -1,0 +1,50 @@
+
+.pgchk__title {
+  border: 1px solid black;
+  margin-top: 20px;
+  padding-left: 15px;
+}
+
+.pgchk_wrpFlx {
+  border: 1px solid black;
+  display: flex;
+  padding: 10px;
+}
+
+.pgchk_tickerWrp {
+  max-width: 1200px;
+  /*padding: 10px;*/
+}
+
+.pgchk__pLeft {
+  width: 70%;
+}
+
+.pgchk__pRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.btn_change {
+  width: 233px;
+  height: 39px;
+  background-color: white;
+  margin: auto;
+
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
+.pgchk__wrpSubmit {
+  display: flex;
+  /*width: 833px;*/
+  justify-content: flex-end;
+}
+
+

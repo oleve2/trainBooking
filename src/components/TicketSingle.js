@@ -1,7 +1,7 @@
 
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom'; 
 import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 
 // styles
 import './TicketSingle.css';
@@ -12,8 +12,9 @@ import TicketSingleSeats from './TicketSingleSeats';
 import arrToRight from '../assets/arrow_to_right.png';
 
 // reducer
-import { tsToDate, tsToTime } from '../rtkstore/ticketReducer';
+import { tsToDate, timeInTravelMins } from '../rtkstore/util_functions'; //tsToTime, 
 import { actionsTicketReducer } from '../rtkstore/ticketReducer'; 
+
 
 
 /**
@@ -26,8 +27,14 @@ export default function TicketSingle(props) {
   const dispatch = useDispatch();
   
   //
-  const [lnkSeats, setlnkSeats] = useState(`/seat_select/${props.ticket.departure._id}`)
-  
+  const [lnkSeats, setlnkSeats] = useState(''); //(props.ticket !== undefined) ? `/seat_select/${props.ticket.departure._id}` : '';
+
+  const [from_dt, setfrom_dt] = useState(['']);
+  const [from_tm, setfrom_tm] = useState(['']);
+  const [to_dt, setto_dt]     = useState(['']);
+  const [to_tm, setto_tm]     = useState(['']);
+  const [tripInMinutes, settripInMinutes] = useState('');
+
   //
   const filterPriceSeats = (priceLabel, seats) => {
     for (let keyPrice of Object.keys(seats)) {
@@ -37,6 +44,52 @@ export default function TicketSingle(props) {
     }
     //return {};
   }
+
+  useEffect( () => {
+    if (props.ticket !== undefined) {
+      let d1 = tsToDate(props.ticket.departure.from.datetime).split("T");
+      let d2 = tsToDate(props.ticket.departure.to.datetime).split("T");
+      let travMins = timeInTravelMins(props.ticket.departure.from.datetime, props.ticket.departure.to.datetime)
+      setfrom_dt(d1[0]);
+      setfrom_tm(d1[1]);
+      setto_dt(d2[0]);
+      setto_tm(d2[1]);
+      settripInMinutes(travMins);
+
+      setlnkSeats(`/seat_select/${props.ticket.departure._id}`);
+    }
+  }, [props.ticket])  
+
+  // handler on page "ticket_select"
+  const handleButtonClick = () => {
+    let d = {
+      'train_id':       props.ticket.departure._id,
+      'train_name':     props.ticket.departure.train.name,
+      'from_date':      tsToDate(props.ticket.departure.from.datetime),
+      'from_city':      props.ticket.departure.from.city.name,
+      'from_station':   props.ticket.departure.from.railway_station_name,
+      'trip_duration':  tripInMinutes,                                          //tsToTime(props.ticket.departure.duration),
+      'to_date':        tsToDate(props.ticket.departure.to.datetime),
+      'to_city':        props.ticket.departure.to.city.name,
+      'to_station':     props.ticket.departure.to.railway_station_name,
+      /*
+      'available_seats_info': props.ticket.departure.available_seats_info,
+      'price_info':     props.ticket.departure.price_info,
+      */
+    } 
+    //console.log('d=', d);
+    //
+    dispatch( actionsTicketReducer.setpurchaseTrain(d) );
+    dispatch( actionsTicketReducer.setpurchaseTrainDetails(props.ticket) );
+    // 
+    navigate(lnkSeats);
+  }
+
+  // handler on page "checkout"
+  const handleChangeCheckout = () => {
+    navigate('/ticket_select')
+  }
+
 
 
   //
@@ -55,76 +108,47 @@ export default function TicketSingle(props) {
 
     <div className='ticketWrp__tripInfo'>
       <div className='tripInfo__container tripInfo_block'>
-        <div className='tripInfo__date'>{tsToDate(props.ticket.departure.from.datetime)}</div>   {/* from date: */}
+        <div className='tripInfo__date'>{from_dt}</div>   {/* from date:  tsToDate(props.ticket.departure.from.datetime)*/}
+        <div className='tripInfo__date'>{from_tm}</div>
         <div className='tripInfo__city'>{props.ticket.departure.from.city.name}</div>            {/* from city: */}
         <div className='tripInfo__station'>{props.ticket.departure.from.railway_station_name}</div> {/* from station: */}
       </div>
       
       <div className='tripInfo_block'>
-        <div>{tsToTime(props.ticket.departure.duration)}</div> {/* time of trip: */}
+        {/* {tsToTime(props.ticket.departure.duration)} */}
+        <div>{tripInMinutes}</div> {/* time of trip: */}
         <div className='tripInfo__containerCenter'>
           <img className='tripInfo__arrow' src={arrToRight} alt="arrow" />
         </div>
       </div>
 
       <div className='tripInfo__container tripInfo_block'>
-        <div className='tripInfo__date'>{tsToDate(props.ticket.departure.to.datetime)}</div>   {/* to date: */}
+        <div className='tripInfo__date'>{to_dt}</div>   {/* to date: tsToDate(props.ticket.departure.to.datetime)*/}
+        <div className='tripInfo__date'>{to_tm}</div>
         <div className='tripInfo__city'>{props.ticket.departure.to.city.name}</div>            {/* to city: */}
         <div className='tripInfo__station'>{props.ticket.departure.to.railway_station_name}</div> {/* to station: */}
       </div>
     </div>
 
     <div className='ticketWrp__seatInfo'>
-      {/* перенести в отдельный объект (с функцией)*/}
-
-      {/**/}
       { Object.keys(props.ticket.departure.available_seats_info).map( (item) => {
         return <div key={item}>
-          {/*
-          {item} / 
-          {props.ticket.departure.available_seats_info[item]} <br />
-          <div>{ JSON.stringify(filterPriceSeats(item, props.ticket.departure.price_info)) }</div>  
-          <br/><br/>
-          */}
-          
           <TicketSingleSeats 
             classTitle={item}
             cntLeft={props.ticket.departure.available_seats_info[item]}
             seatPrices={filterPriceSeats(item, props.ticket.departure.price_info)}
           />
-          {/*<hr />*/}
         </div>
       } 
       )}
 
-      <button className='button_seats' 
-        onClick={() => {
-          let d = {
-            'train_id':       props.ticket.departure._id,
-            'train_name':     props.ticket.departure.train.name,
-            'from_date':      tsToDate(props.ticket.departure.from.datetime),
-            'from_city':      props.ticket.departure.from.city.name,
-            'from_station':   props.ticket.departure.from.railway_station_name,
-            'trip_dutation':  tsToTime(props.ticket.departure.duration),
-            'to_date':        tsToDate(props.ticket.departure.to.datetime),
-            'to_city':        props.ticket.departure.to.city.name,
-            'to_station':     props.ticket.departure.to.railway_station_name,
-            /*
-            'available_seats_info': props.ticket.departure.available_seats_info,
-            'price_info':     props.ticket.departure.price_info,
-            */
-          } 
-          //console.log('d=', d);
-          //
-          dispatch( actionsTicketReducer.setpurchaseTrain(d) );
-          // 
-          navigate(lnkSeats);
-        }}
-      >Выбрать места</button>
-      {/*<Link className='button_seats' to={lnkSeats}>Выбрать места</Link>*/}
+      { (props.usedPage === 'ticket_select') && 
+        <button className='button_seats' onClick={handleButtonClick}>Выбрать места</button>
+      }
+      { (props.usedPage === 'checkout') && 
+        <button className='btn_change' onClick={handleChangeCheckout}>Изменить</button>
+      }      
     </div>
   </div>
-  
-  {/*JSON.stringify(props.ticket)*/}
   </>)
 }

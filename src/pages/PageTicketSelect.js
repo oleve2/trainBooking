@@ -30,7 +30,7 @@ import TickSel_TicketDisplayParams from "../components/TickSel_TicketDisplayPara
 //import { makeCalcsAAA } from "../rtkstore/ticketReducer";
 
 // -------------------------------------
-export default function PageTicketSelect(props) {
+export default function PageTicketSelect() {
   const dispatch = useDispatch();
 
   // store
@@ -76,7 +76,7 @@ export default function PageTicketSelect(props) {
       </div>
 
       {/* right side */}
-      <div style={{border:'1px solid blue', overflowX:'scroll'}}> 
+      <div style={{overflowX:'scroll'}}>  {/* border:'1px solid blue', */}
         <div className='TicketList'>
           <h3>Билеты</h3>
 
@@ -93,7 +93,10 @@ export default function PageTicketSelect(props) {
             ? <>
               { storeTicketsSearchResult.items.map( (item) => {
                 return <li key={item.departure._id} className='TicketList__li'>
-                  <TicketSingle ticket={item} />
+                  <TicketSingle 
+                    ticket={item} 
+                    usedPage="ticket_select"
+                  />
                 </li>  
               }) }
             </>

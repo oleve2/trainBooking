@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .mainWrapper {
   max-width: 1900px;
   margin: 5px auto;

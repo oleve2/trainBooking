@@ -1,22 +1,22 @@
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 import './TicketSingleSeats.css' 
 
 export default function TicketSingleSeats(props) {
   //
   const [flgShow, setflgShow] = useState(false);
-  const [titleMapper, settitleMapper] = useState({
+  const titleMapper = {
     'first': 'Люкс', 
     'second': 'Купе',
     'third': 'Плацкарт',
     'fourth': 'Сидячий'
-  })
-  const [seatMaper, setseatMaper] = useState({
+  }
+  const seatMaper = {
     'top_price': 'Верхняя койка',
     'bottom_price':'Нижняя койка',
     'side_price':'Боковая койка'
-  })
+  }
 
   //
   const doToggle = () => {

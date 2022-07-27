@@ -13,9 +13,6 @@ export default function TickSel_TicketDisplayParams(props) {
   const dispatch = useDispatch();
 
   // store
-  const storeCityFrom       = useSelector( (store) => store.ticketReducer.searchParams.cityFrom );
-  const storeCityTo         = useSelector( (store) => store.ticketReducer.searchParams.cityTo );
-
   const storeticketsPerPage = useSelector( (store) => store.ticketReducer.ticketsPerPage );
   const storeTicketsSearchResult = useSelector( (store) => store.ticketReducer.ticketsSearchResult);
 

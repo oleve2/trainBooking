@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import PageHome from './pages/PageHome';
@@ -8,6 +9,7 @@ import PagePassengers     from './pages/PagePassengers';
 
 import PagePayment        from './pages/PagePayment';
 import PageCheckout from './pages/PageCheckout';
+import PageOrderSuccess from './pages/PageOrderSuccess';
 
 import './App.css';
 
@@ -34,6 +36,8 @@ function App() {
 
           <Route path='/payment' element={<PagePayment/>}></Route>
           <Route path='/checkout' element={<PageCheckout/>}></Route>
+
+          <Route path='/order_success' element={<PageOrderSuccess/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

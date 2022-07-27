@@ -5,7 +5,7 @@ import { useSelector/*, useDispatch*/ } from 'react-redux';
 import './NavigationProgress.css';
 
 //
-export default function NavigationProgress(props) {
+export default function NavigationProgress() {
   // store
   const storenavigationProgressList   = useSelector( (store) => store.ticketReducer.navigationProgressList);
   const storenavigationProgressActive = useSelector( (store) => store.ticketReducer.navigationProgressActive);

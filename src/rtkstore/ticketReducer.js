@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { cloneDeep } from 'lodash';
 
+import { buildRoutesQuery, buildSeatsQuery } from "./util_functions";
 
-//const baseURL = 'https://fe-diplom.herokuapp.com';
-const baseURL = process.env.REACT_APP_BASE_URL;   //'http://localhost:3001';
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 
 const initialState = {
   // -------------------------
   ticketsLast: [],
   ticketsSearchResult: [],          // original query result
-  //ticketsSearchResultFiltered: [],  // filtered by search params
+  seatsSearchResult: [],
+  //flgSeatsLoaded: false,
   searchURL: '',
   // -------------------------
   // cnt ticket per page
@@ -33,6 +34,7 @@ const initialState = {
 
   // purchase information
   purchaseTrain: {},
+  purchaseTrainDetails: {},
   purchaseSeats: [],
 
   // -------------------------
@@ -75,8 +77,13 @@ const ticketReducer = createSlice({
     // Last
     setTicketsLast(state, action) { state.ticketsLast = action.payload },
 
-    // ticketsFound (by idFrom, idTo)
+    // ticketsSearchResult
     setTicketsSearchResult(state, action) { state.ticketsSearchResult = action.payload }, 
+
+    // seatsSearchResult
+    setseatsSearchResult(state, action) { state.seatsSearchResult = action.payload }, 
+    // flgSeatsLoaded
+    //setflgSeatsLoaded(state, action) { state.flgSeatsLoaded = action.payload }, 
 
     // display options -------------------------------
     // set ticketsPerPage
@@ -125,6 +132,8 @@ const ticketReducer = createSlice({
     // purchase information  -------------------------------
     // train info
     setpurchaseTrain(state, action) { state.purchaseTrain = action.payload },
+    // purchaseTrainDetails
+    setpurchaseTrainDetails(state, action) { state.purchaseTrainDetails = action.payload },
     // seats info
     setpurchaseSeats(state, action) { state.purchaseSeats = action.payload }
 
@@ -143,12 +152,12 @@ export const fetchTicketsLast = () => async (dispatch) => {
 }
 
 
-
+// -------------------------------------------------------------
 // https://stackoverflow.com/questions/65277731/redux-toolkit-accessing-state-from-thunk
 // https://github.com/reduxjs/redux-thunk#motivation
 
 // main routes fetch function
-export const fetchRoutes = () => async (dispatch, getState) => { //idFrom, idTo
+export const fetchRoutes = () => async (dispatch, getState) => {
   // 01) get state values info
   const stt = getState();
   //console.log('stt=', stt);
@@ -156,14 +165,13 @@ export const fetchRoutes = () => async (dispatch, getState) => { //idFrom, idTo
   //let limit = stt.ticketReducer.ticketsPerPage;
   //let offset = stt.ticketReducer.offset * stt.ticketReducer.ticketsPerPage;
 
-
   // 02-1) build url from data in store
-  let url = buildRoutesQuery(stt);
+  let url = buildRoutesQuery(stt, baseURL);
   //let url = `${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}&limit=${limit}&offset=${offset}`;
   //console.log(`url = ${url}`);
   
   // 02-2) fetch
-  let resp = await fetch(url);
+  let resp  = await fetch(url);
   let data = await resp.json();
   //console.log('data tickets search=', data);
   
@@ -172,7 +180,24 @@ export const fetchRoutes = () => async (dispatch, getState) => { //idFrom, idTo
 }
 
 
+// main seats fetch function
+export const fetchSeats = (trainId) => async (dispatch, getState) => {
+  // 01) get state values info
+  const stt = getState();
 
+  // 02-1) build url from data in store
+  let url = buildSeatsQuery(trainId, stt, baseURL);
+  
+  // 02-2) fetch
+  let resp = await fetch(url);
+  let data = await resp.json();
+  console.log('data seats search=', data);
+  
+  // 03) set to store
+  dispatch( actionsTicketReducer.setseatsSearchResult(data) );
+}
+
+// -------------------------------------------------------------
 
 // calculate tickets display parameters
 /* 
@@ -272,83 +297,5 @@ export const SeatsDoAction = (item) => async (dispatch, getState) => {
 
 
 
-
 // ====================================================================================
-// support functions --------------------------------------
-//
-export const tsToDate = (ts) => {
-  // тут можно подкрутить формат
-  return new Date(ts * 1000).toISOString().slice(0,19);
-}
 
-//
-export const tsToTime = (ts) => {
-  function propLen(dt) {
-    let dt2 = dt.toString();
-    return (dt2.length<2) ? '0'+dt2 : dt2;
-  }
-  let ts2 = new Date(ts);
-  return propLen(ts2.getHours()) + ':' + propLen(ts2.getMinutes()) + ':' + propLen(ts2.getSeconds());
-}
-
-
-// build a query string for fetching tickets by routes (to use in "fetchRoutes")
-export const buildRoutesQuery = (state) => {
-  // final url
-  let routesURL=`${baseURL}`; 
-
-  // [search params]
-  let tickRedSP = state.ticketReducer.searchParams;
-  //console.log('tickRedSP', tickRedSP);
-  
-  // 1-1) cityFrom cityTo
-  //console.log('cityFrom._id=', tickRedSP.cityFrom._id, 'cityTo._id', tickRedSP.cityTo._id);
-  if ( (tickRedSP.cityFrom === undefined) || (tickRedSP.cityTo === undefined) ) {
-    alert('cityFrom or cityTo is not set');
-    return;
-  } else {
-    routesURL += `/routes?from_city_id=${tickRedSP.cityFrom._id}&to_city_id=${tickRedSP.cityTo._id}`;
-  }
-  
-  // 1-2) dateDepart dateReturn
-  //console.log('dateDepart=', tickRedSP.dateDepart, 'dateReturn', tickRedSP.dateReturn);
-  if ( tickRedSP.dateDepart != '') { routesURL += `&date_start=${tickRedSP.dateDepart}` }
-  if ( tickRedSP.dateReturn != '') { routesURL += `&date_end=${tickRedSP.dateReturn}` }
-  
-  // 1-3) is-flags
-  /*console.log('isKupe', tickRedSP.isKupe, 'isPlatskart', tickRedSP.isPlatskart, 
-    'isSitting', tickRedSP.isSitting, 'isLux', tickRedSP.isLux, 
-    'isWifi', tickRedSP.isWifi, 'isExpress', tickRedSP.isExpress);*/
-  //
-  if ( tickRedSP.isKupe      === true) { routesURL += `&have_second_class=${tickRedSP.isKupe}` }
-  if ( tickRedSP.isPlatskart === true) { routesURL += `&have_third_class=${tickRedSP.isPlatskart}` }
-  if ( tickRedSP.isSitting   === true) { routesURL += `&have_fourth_class=${tickRedSP.isSitting}` }
-  if ( tickRedSP.isLux       === true) { routesURL += `&have_first_class=${tickRedSP.isLux}` }
-  if ( tickRedSP.isWifi      === true) { routesURL += `&have_wifi=${tickRedSP.isWifi}` }
-  if ( tickRedSP.isExpress   === true) { routesURL += `&have_express=${tickRedSP.isExpress}` }
-  /*
-  routesURL += `&have_second_class=${tickRedSP.isKupe}\
-&have_third_class=${tickRedSP.isPlatskart}\
-&have_fourth_class=${tickRedSP.isSitting}\
-&have_first_class=${tickRedSP.isLux}\
-&have_wifi=${tickRedSP.isWifi}\
-&have_express=${tickRedSP.isExpress}`;
-  */
-
-  // 1-4) priceFrom priceTo
-  if ( tickRedSP.priceRange !== undefined ) { routesURL += `&price_from=${tickRedSP.priceRange[0]}&price_to=${tickRedSP.priceRange[1]}` }
-
-
-
-  // limit and offset
-  let tickRed = state.ticketReducer; // ticket reducer head
-  let limit   = tickRed.ticketsPerPage;
-  let offset  = tickRed.offset * tickRed.ticketsPerPage;  
-  //console.log('limit', limit, 'offset', offset);
-  routesURL += `&limit=${limit}&offset=${offset}`;
-
-  console.log('routesURL=', routesURL);
-
-  // final return
-  return routesURL;
-}

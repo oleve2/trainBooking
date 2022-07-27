@@ -13,6 +13,9 @@ import { fetchRoutes } from '../rtkstore/ticketReducer';
 // custom resize hook
 import useWindowDimensions from '../hooks/useWindowDimensions';
 
+// images
+import switch_tsf from '../assets/switch_tsf.png';
+
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 /**
@@ -27,7 +30,7 @@ export default function TicketSearchForm(props) {
   const dispatch = useDispatch();
 
   // custom hooks
-  const {height, width} = useWindowDimensions();
+  const {width} = useWindowDimensions();
 
   // store 
   const storeCityFrom = useSelector( (store) => store.ticketReducer.searchParams.cityFrom);
@@ -57,11 +60,12 @@ export default function TicketSearchForm(props) {
   const [dateReturn, setdateReturn] = useState(storeDateReturn);
 
   // ticket form direction to display
-  const [dir, setDir] = useState(props.direction); // 'column' or 'row'
-  const [isFixed2, setisFixed2] = useState(props.isFixed); // should a form resize with window or not
+  const [dir, setDir] = useState(props.direction);          // 'column' or 'row'
+  const [isFixed2] = useState(props.isFixed);  // should a form resize with window or not
 
   const changeDirection = () => {
-     (dir === 'column') ? setDir('row') : setDir('column'); 
+    //(dir === 'column') ? setDir('row') : setDir('column'); 
+    setDir(dir === 'column' ? 'row' : 'column');
   }
 
   // store setting functions
@@ -119,33 +123,27 @@ export default function TicketSearchForm(props) {
   // https://erikmartinjordan.com/start-search-user-not-typing
   /**/
   const fetchCity = async (str) => {
-    let resp = await fetch(`${baseURL}/routes/cities?name=${str}`); //cityFromStr //https://fe-diplom.herokuapp.com 
+    let resp = await fetch(`${baseURL}/routes/cities?name=${str}`);
     let data = await resp.json();
     return data;
   }
 
   // click search items button
   const handleSearchButton = () => {
-    /*
-    console.log(storeCityFrom, cityFromStr, cityFromStr === '', storeCityFrom._id);
-    console.log(storeCityTo, cityToStr, cityToStr === '', storeCityTo._id);
-    */
-
     let flgValidCityFrom = ( (storeCityFrom._id !== undefined) && (cityFromStr !== '') && (storeCityFrom.name === cityFromStr) );
     let flgValidCityTo   = ( (storeCityTo._id !== undefined) && (cityToStr !== '') && (storeCityTo.name === cityToStr) );
     
     if (!flgValidCityFrom) {
       alert('Заполните корректно поле "Направление отбытия"!');
       return;
-    };
+    }
     if (!flgValidCityTo) {
       alert('Заполните корректно поле "Направление прибытия"!');
       return;
-    };
+    }
     if (flgValidCityFrom && flgValidCityTo) {
-      //console.log('==> search begins !!!');
       navigate('/ticket_select');
-      dispatch(fetchRoutes()); //storeCityFrom._id, storeCityTo._id
+      dispatch(fetchRoutes()); // do search
     }
   }
 
@@ -194,20 +192,7 @@ export default function TicketSearchForm(props) {
 
   // ---------------------------------------------------
   return (
-    <div className='ticketForm'>
-    {/*
-    <div>cityFrom:{JSON.stringify(cityFrom)}</div>        <br />  
-    <div>flgCityFromShow:{JSON.stringify(flgCityFromShow)}</div>
-    <div>isCityFromSelected:{JSON.stringify(isCityFromSelected)}</div>
-    <div>cityFromHover:{JSON.stringify(cityFromHover)}</div>  <br /> 
-
-    <div>cityTo:{JSON.stringify(cityTo)}</div>        <br />  
-    <div>flgCityToShow:{JSON.stringify(flgCityToShow)}</div>   
-    <div>isCityToSelected:{JSON.stringify(isCityToSelected)}</div>     
-    <div>cityToHover:{JSON.stringify(cityToHover)}</div>  <br /> 
-    */}
-
-    width={width} height={height} {JSON.stringify(props.isFixed)}
+    <div className='ticketForm'>     {/*width={width} height={height} {JSON.stringify(props.isFixed)}*/}
     <form className='ticketSearchForm'>
       <div className={(dir === 'column' ? 'dirColumn' : 'dirRow')}>
         <div style={{height: '100px', margin: '40px'}}>
@@ -245,7 +230,9 @@ export default function TicketSearchForm(props) {
               }
             </div>
             
-            <img src="" alt="switch" className='tsf_img' style={{width: '50px', height:'50px'}} onClick={changeDirection} />
+            <div style={{display:'flex', alignItems:'center', margin:'0px 20px'}}>
+              <img src={switch_tsf} alt="switch" className='tsf_img' style={{width: '24px', height:'24px'}} onClick={changeDirection} />
+            </div>
 
             <div 
               onFocus={() => {setflgCityToShow(true)}}
@@ -291,7 +278,9 @@ export default function TicketSearchForm(props) {
               onChange={(e) => { clickDateDepart(e.target.value) }} 
             />
 
-            <img src="" alt="switch" className='tsf_img' style={{width: '50px', height:'50px'}} onClick={changeDirection} />
+            <div style={{display:'flex', alignItems:'center', margin:'0px 20px'}}>
+              <img src={switch_tsf} alt="switch" className='tsf_img' style={{width: '24px', height:'24px'}} onClick={changeDirection} />
+            </div>  
             
             {/* должно быть - дата обратной поездки, но это неточно ... */ }
             <input className="FInput" type="date" 

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // styles
@@ -18,8 +18,6 @@ export default function TickSel_Slider(props) {
 
   // store
   const storeticketsPerPage = useSelector( (store) => store.ticketReducer.ticketsPerPage );
-  const storeCityFrom       = useSelector( (store) => store.ticketReducer.searchParams.cityFrom );
-  const storeCityTo         = useSelector( (store) => store.ticketReducer.searchParams.cityTo );
 
   // more store vals
   const storecntBlocks        = useSelector( (store) => store.ticketReducer.cntBlocks );   //, setcntBlocks] = useState(0);

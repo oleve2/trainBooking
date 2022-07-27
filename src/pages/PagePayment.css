@@ -1,0 +1,20 @@
+
+.pagePayment-wrapper {
+  max-width: 600px;
+}
+
+.pagePayment-btnSubmit {
+  width: 320px;
+  height: 60px;
+  background-color: #FFA800;
+  margin-top: 40px;
+  
+  color: white;
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+

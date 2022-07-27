@@ -1,7 +1,8 @@
 
+// styles
 import './Footer.css';
-import footerUp from '../assets/footer_up.png';
 
+// images
 import footTel from '../assets/footer/footer_tel.png'
 import footMail from '../assets/footer/footer_mail.png'
 import footSkype from '../assets/footer/footer_skype.png'
@@ -13,11 +14,14 @@ import footGoogleplus from '../assets/footer/footer_googleplus.png';
 import footFb from '../assets/footer/footer_fb.png';
 import footTwitter from '../assets/footer/footer_twitter.png';
 
-export default function Footer(props) {
+import footerUp from '../assets/footer_up.png';
+
+//
+export default function Footer() {
   return (
   <>
   {/* Футер */}
-  <div className="homeBlock footer">
+  <div className="homeBlock footer" id="contacts">
     <div className="footer_head">
       <div className="a2">
         <div className="footer_head__title">Свяжитесь с нами</div>
@@ -75,6 +79,8 @@ export default function Footer(props) {
         </ul>
       </div>        
     </div>
+
+    <div>horizontal line</div>
 
     <div className="footer-bottom">
       <div className="footer-bottom__logo">Лого</div>

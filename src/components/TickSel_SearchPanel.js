@@ -2,7 +2,7 @@
 // styles
 import './TickSel_SearchPanel.css'
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // libraries
@@ -12,7 +12,6 @@ import debounce from 'lodash.debounce';
 // images -----------------
 import tstoggle from '../assets/tudasuda_toggle.png';
 import arrowFrom from '../assets/arrowFrom.png';
-import arrowTo from '../assets/arrowTo.png';
 
 import imgKupe from '../assets/kupe.png';
 import imgPlats from '../assets/platskart.png';
@@ -25,7 +24,7 @@ import imgExpress from '../assets/express.png';
 import RangeSlider from "./ui/RangeSlider";
 import Switcher from "./ui/Switcher";
 
-import TudaObratno from "./TudaObratno";
+//import TripFromTo from "./TripFromTo";
 
 // store
 import { actionsTicketReducer } from '../rtkstore/ticketReducer';
@@ -33,26 +32,42 @@ import { fetchRoutes, updatepriceRange, updatetudaDepartDateRange, updatetudaArr
 
 
 //
-export default function TickSel_SearchPanel(props) {
+export default function TickSel_SearchPanel() {
   const dispatch = useDispatch();
 
   const [tudaToggle, setTudaToggle] = useState(false)
-  const [obratnoToggle, setObratnoToggle] = useState(false)
+  //const [obratnoToggle, setObratnoToggle] = useState(false)
 
   // store (params and changers)
-  const storeDateDepart = useSelector( (store) => store.ticketReducer.searchParams.dateDepart);
-  const storeDateReturn = useSelector( (store) => store.ticketReducer.searchParams.dateReturn);
-
-  const storeisKupe       = useSelector( (store) => store.ticketReducer.searchParams.isKupe );
-  const storeisPlatskart  = useSelector( (store) => store.ticketReducer.searchParams.isPlatskart );
-  const storeisSitting    = useSelector( (store) => store.ticketReducer.searchParams.isSitting );
-  const storeisLux        = useSelector( (store) => store.ticketReducer.searchParams.isLux );
-  const storeisWifi       = useSelector( (store) => store.ticketReducer.searchParams.isWifi );
-  const storeisExpress    = useSelector( (store) => store.ticketReducer.searchParams.isExpress );
-  
-  const storepriceRange   = useSelector( (store) => store.ticketReducer.searchParams.priceRange );
-  const storetudaDepartDateRange    = useSelector( (store) => store.ticketReducer.searchParams.tudaDepartDateRange );
-  const storetudaArrivDateRange      = useSelector( (store) => store.ticketReducer.searchParams.tudaArrivDateRange );
+  const {
+    storeDateDepart,
+    storeDateReturn,
+    //
+    storeisKupe,
+    storeisPlatskart,
+    storeisSitting,
+    storeisLux,
+    storeisWifi,
+    storeisExpress,
+    //
+    storepriceRange,
+    storetudaDepartDateRange,
+    storetudaArrivDateRange,
+  } = useSelector( store => ({
+    storeDateDepart: store.ticketReducer.searchParams.dateDepart,
+    storeDateReturn: store.ticketReducer.searchParams.dateReturn,
+    //
+    storeisKupe:      store.ticketReducer.searchParams.isKupe,
+    storeisPlatskart: store.ticketReducer.searchParams.isPlatskart,
+    storeisSitting:   store.ticketReducer.searchParams.isSitting,
+    storeisLux:       store.ticketReducer.searchParams.isLux,
+    storeisWifi:      store.ticketReducer.searchParams.isWifi,
+    storeisExpress:   store.ticketReducer.searchParams.isExpress,
+    //
+    storepriceRange:          store.ticketReducer.searchParams.priceRange,
+    storetudaDepartDateRange: store.ticketReducer.searchParams.tudaDepartDateRange,
+    storetudaArrivDateRange:  store.ticketReducer.searchParams.tudaArrivDateRange,
+  }))
 
   // set DateDepart
   const clickDateDepart = (val) => {
@@ -68,7 +83,6 @@ export default function TickSel_SearchPanel(props) {
 
   //
   const changeisKupe          = (val) => { 
-    console.log('changeisKupe');
     dispatch( actionsTicketReducer.setisKupe(val) );
     dispatch( fetchRoutes() );
   };
@@ -234,19 +248,6 @@ export default function TickSel_SearchPanel(props) {
       
       <hr className="hrLine"/>
 
-      {/*
-      <div className="tsparamBlock">
-        <div className="tspb__header">
-          <div>
-            <img src={arrowTo} alt="arrTo" />
-            <label className="trip_date__label">Обратно</label>
-          </div>
-          <img src={tstoggle} alt="toggle"  onClick={() => {setObratnoToggle(!obratnoToggle)}}/>
-        </div>
-
-        { obratnoToggle ? <TudaObratno  /> : <></> }
-      </div>
-      */}
     </div>  
   </>
   )

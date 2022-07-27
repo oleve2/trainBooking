@@ -8,6 +8,9 @@
 .logo_header__wrapperLogotype {
   background-color: #000000;
   opacity: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .logo_header__logotype {
   margin-left: 40px;

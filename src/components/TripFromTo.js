@@ -17,7 +17,7 @@ const topLeveldebTimeTo = debounce(debTimeTo, 1000)
 
 
 //
-export default function TudaObratno(props) {
+export default function TripFromTo(props) {
   return (
     <div style={{margin: '20px 0px'}}>
       <div>{props.title}</div>
