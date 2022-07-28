@@ -17,26 +17,34 @@ export default function PassengerAddForm(props) {
   const ticketTypeList = ['', 'Взрослый','Детский'];
   const [ticketTypeSelected, setticketTypeSelected] = useState( (props.p.ticketType !== undefined) ? props.p.ticketType : '' );
   
+  const checkPAF = (val) => {
+    if (val !== undefined) {
+      return val;
+    } else {
+      return '';
+    }
+  }
+
   // 02 FIO
-  const [firstName, setfirstName]   = useState(props.p.firstName);
-  const [secondName, setsecondName] = useState(props.p.secondName);
-  const [thirdName, setthirdName]   = useState(props.p.thirdName);
+  const [firstName, setfirstName]   = useState( checkPAF(props.p.firstName) );
+  const [secondName, setsecondName] = useState( checkPAF(props.p.secondName) );
+  const [thirdName, setthirdName]   = useState( checkPAF(props.p.thirdName) );
   
   // 03-1 gender
   const gender = ['М','Ж'];
   const [genderSelected, setgenderSelected] = useState( (props.p.gender !== undefined) ? props.p.gender : 'М');
 
   // 03-2 date birth
-  const [birthDate, setbirthDate] = useState(props.p.birthDate);
+  const [birthDate, setbirthDate] = useState( checkPAF(props.p.birthDate) );
 
   // 03-3 limited activity
-  const [limitedActiv, setlimitedActiv] = useState(props.p.limitedActiv);
+  const [limitedActiv, setlimitedActiv] = useState( checkPAF(props.p.limitedActiv) );
 
   // 04 document type, series, number
   const docTypeList = ['', 'Паспорт РФ','Свидетельство о рождении'];
   const [docTypeSelected, setdocTypeSelected] = useState( (props.p.docType !== undefined) ? props.p.docType : '' );
-  const [docSeries, setdocSeries]   = useState(props.p.docSeries);
-  const [docNumber, setddocNumber]  = useState(props.p.docNumber);
+  const [docSeries, setdocSeries]   = useState( checkPAF(props.p.docSeries) );
+  const [docNumber, setddocNumber]  = useState( checkPAF(props.p.docNumber) );
 
   // ----------------------------------
   //
