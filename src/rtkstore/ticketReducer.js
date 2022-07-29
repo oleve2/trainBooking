@@ -160,20 +160,13 @@ export const fetchTicketsLast = () => async (dispatch) => {
 export const fetchRoutes = () => async (dispatch, getState) => {
   // 01) get state values info
   const stt = getState();
-  //console.log('stt=', stt);
-  //console.log(`thunk => perPage=${stt.ticketReducer.ticketsPerPage}, offset=${stt.ticketReducer.offset}`);
-  //let limit = stt.ticketReducer.ticketsPerPage;
-  //let offset = stt.ticketReducer.offset * stt.ticketReducer.ticketsPerPage;
 
   // 02-1) build url from data in store
   let url = buildRoutesQuery(stt, baseURL);
-  //let url = `${baseURL}/routes?from_city_id=${idFrom}&to_city_id=${idTo}&limit=${limit}&offset=${offset}`;
-  //console.log(`url = ${url}`);
   
   // 02-2) fetch
   let resp  = await fetch(url);
   let data = await resp.json();
-  //console.log('data tickets search=', data);
   
   // 03) set to store
   dispatch(actionsTicketReducer.setTicketsSearchResult(data));
@@ -191,7 +184,7 @@ export const fetchSeats = (trainId) => async (dispatch, getState) => {
   // 02-2) fetch
   let resp = await fetch(url);
   let data = await resp.json();
-  console.log('data seats search=', data);
+  //console.log('data seats search=', data);
   
   // 03) set to store
   dispatch( actionsTicketReducer.setseatsSearchResult(data) );
@@ -213,14 +206,12 @@ export const makeCalcsAAA = (par_storeticketsPerPage, par_total_count) => (dispa
   let blocksCnt;
   let blockArr = [];
 
-  //console.log(`perPage=${par_storeticketsPerPage}, totalCount=${par_total_count}`);
   if ( (par_storeticketsPerPage > 0) && (par_total_count !== undefined) && (par_total_count > 0) ) {
     // 
     if ( par_storeticketsPerPage > par_total_count) {
-      //console.log('par_storeticketsPerPage > par_total_count')
       blockArr.push(1);   // push 1 page in array
       // setters
-      dispatch( actionsTicketReducer.setcntBlocks(1) );               //setcntBlocks(1);
+      dispatch( actionsTicketReducer.setcntBlocks(1) );
       dispatch( actionsTicketReducer.setsliderBlockList(blockArr) );
       dispatch( actionsTicketReducer.settoffset(0) );
       return;
@@ -229,10 +220,8 @@ export const makeCalcsAAA = (par_storeticketsPerPage, par_total_count) => (dispa
     // cnt  
     blocksCnt = Math.floor(par_total_count / par_storeticketsPerPage);
     if ((par_storeticketsPerPage %  par_total_count) !== 0) {
-      //console.log(`blocksCnt added 1`);
       blocksCnt += 1;
     }
-    //console.log(`blocksCnt 1 =${blocksCnt}`);
 
     // Arr      
     for (let i=1; i <= blocksCnt; i++) {
@@ -240,8 +229,8 @@ export const makeCalcsAAA = (par_storeticketsPerPage, par_total_count) => (dispa
     }
 
     // setters
-    dispatch( actionsTicketReducer.setcntBlocks(blocksCnt) );       //setcntBlocks(blocksCnt);
-    dispatch( actionsTicketReducer.setsliderBlockList(blockArr) );  //setsliderBlockList(blockArr);
+    dispatch( actionsTicketReducer.setcntBlocks(blocksCnt) );
+    dispatch( actionsTicketReducer.setsliderBlockList(blockArr) );
     dispatch( actionsTicketReducer.settoffset(0) );
     return;
   }
@@ -269,15 +258,11 @@ export const updatetudaArrivDateRange = (val) => async (dispatch) => {
 
 
 // [work with seats]
-// переименовать!!!
 export const SeatsDoAction = (item) => async (dispatch, getState) => {
-  //console.log('reducer item=', item); // {coachName: 'ЛД-74', seatIndex: 1, selected: true/false}
-  
   // get purchase seat list from store
   const stt = getState();
   let psList = stt.ticketReducer.purchaseSeats;
   let psListDC = cloneDeep(psList);
-  //console.log('reducer psListDC=', psListDC);
   
   // case add (selected = true)
   if (item.selected === true) {
@@ -290,12 +275,9 @@ export const SeatsDoAction = (item) => async (dispatch, getState) => {
     let psListFiltered = psListDC.filter( (it) => {
       return (  (it.coachName !== item.coachName) || (it.seatIndex !== item.seatIndex));
     })
-    //console.log('psListFiltered new = ', psListFiltered);
     dispatch( actionsTicketReducer.setpurchaseSeats(psListFiltered) );
   }
 }
-
-
 
 // ====================================================================================
 

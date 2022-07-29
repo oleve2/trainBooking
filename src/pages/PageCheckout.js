@@ -59,7 +59,6 @@ export default function PagePayment() {
     <TripDetails />
 
     <div>
-      {/* поезд */}
       <div className="pgchk__title">
         <h3>Поезд</h3>
       </div>      
@@ -71,7 +70,6 @@ export default function PagePayment() {
       </div>
 
       <div style={{maxWidth:'900px'}}>
-        {/* пассажиры */}
         <div className="pgchk__title">
           <h3>Пассажиры</h3>
         </div>
@@ -89,7 +87,6 @@ export default function PagePayment() {
           </div>
         </div>
         
-        {/* оплата */}
         <div className="pgchk__title">
           <h3>Способ оплаты</h3>
         </div>

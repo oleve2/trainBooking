@@ -12,13 +12,14 @@ import TicketSingleSeats from './TicketSingleSeats';
 import arrToRight from '../assets/arrow_to_right.png';
 
 // reducer
-import { tsToDate, timeInTravelMins } from '../rtkstore/util_functions'; //tsToTime, 
+import { tsToDate, timeInTravelMins } from '../rtkstore/util_functions';
 import { actionsTicketReducer } from '../rtkstore/ticketReducer'; 
 
 
 
 /**
- * props.ticket 
+Props:
+ - props.ticket 
 */
 
 //
@@ -27,7 +28,7 @@ export default function TicketSingle(props) {
   const dispatch = useDispatch();
   
   //
-  const [lnkSeats, setlnkSeats] = useState(''); //(props.ticket !== undefined) ? `/seat_select/${props.ticket.departure._id}` : '';
+  const [lnkSeats, setlnkSeats] = useState('');
 
   const [from_dt, setfrom_dt] = useState(['']);
   const [from_tm, setfrom_tm] = useState(['']);
@@ -60,7 +61,7 @@ export default function TicketSingle(props) {
     }
   }, [props.ticket])  
 
-  // handler on page "ticket_select"
+
   const handleButtonClick = () => {
     let d = {
       'train_id':       props.ticket.departure._id,
@@ -68,16 +69,12 @@ export default function TicketSingle(props) {
       'from_date':      tsToDate(props.ticket.departure.from.datetime),
       'from_city':      props.ticket.departure.from.city.name,
       'from_station':   props.ticket.departure.from.railway_station_name,
-      'trip_duration':  tripInMinutes,                                          //tsToTime(props.ticket.departure.duration),
+      'trip_duration':  tripInMinutes,
       'to_date':        tsToDate(props.ticket.departure.to.datetime),
       'to_city':        props.ticket.departure.to.city.name,
       'to_station':     props.ticket.departure.to.railway_station_name,
-      /*
-      'available_seats_info': props.ticket.departure.available_seats_info,
-      'price_info':     props.ticket.departure.price_info,
-      */
     } 
-    //console.log('d=', d);
+
     //
     dispatch( actionsTicketReducer.setpurchaseTrain(d) );
     dispatch( actionsTicketReducer.setpurchaseTrainDetails(props.ticket) );
@@ -85,11 +82,9 @@ export default function TicketSingle(props) {
     navigate(lnkSeats);
   }
 
-  // handler on page "checkout"
   const handleChangeCheckout = () => {
     navigate('/ticket_select')
   }
-
 
 
   //
@@ -98,7 +93,7 @@ export default function TicketSingle(props) {
     <div className='ticketWrp__trainInfo'> 
       <div>#{props.ticket.departure._id}</div>
       <img src={train_img} alt="train_img" className='ticketWrp__trainImg'/>
-      <div>{props.ticket.departure.train.name}</div> {/* {props.ticket.departure.train._id} //  */}
+      <div>{props.ticket.departure.train.name}</div>
       <div style={{display:'flex'}}>
         <div>{props.ticket.departure.from.city.name}</div> 
         <div>{'->'}</div>
@@ -108,25 +103,24 @@ export default function TicketSingle(props) {
 
     <div className='ticketWrp__tripInfo'>
       <div className='tripInfo__container tripInfo_block'>
-        <div className='tripInfo__date'>{from_dt}</div>   {/* from date:  tsToDate(props.ticket.departure.from.datetime)*/}
+        <div className='tripInfo__date'>{from_dt}</div>
         <div className='tripInfo__date'>{from_tm}</div>
-        <div className='tripInfo__city'>{props.ticket.departure.from.city.name}</div>            {/* from city: */}
-        <div className='tripInfo__station'>{props.ticket.departure.from.railway_station_name}</div> {/* from station: */}
+        <div className='tripInfo__city'>{props.ticket.departure.from.city.name}</div>
+        <div className='tripInfo__station'>{props.ticket.departure.from.railway_station_name}</div>
       </div>
       
       <div className='tripInfo_block'>
-        {/* {tsToTime(props.ticket.departure.duration)} */}
-        <div>{tripInMinutes}</div> {/* time of trip: */}
+        <div>{tripInMinutes}</div>
         <div className='tripInfo__containerCenter'>
           <img className='tripInfo__arrow' src={arrToRight} alt="arrow" />
         </div>
       </div>
 
       <div className='tripInfo__container tripInfo_block'>
-        <div className='tripInfo__date'>{to_dt}</div>   {/* to date: tsToDate(props.ticket.departure.to.datetime)*/}
+        <div className='tripInfo__date'>{to_dt}</div>
         <div className='tripInfo__date'>{to_tm}</div>
-        <div className='tripInfo__city'>{props.ticket.departure.to.city.name}</div>            {/* to city: */}
-        <div className='tripInfo__station'>{props.ticket.departure.to.railway_station_name}</div> {/* to station: */}
+        <div className='tripInfo__city'>{props.ticket.departure.to.city.name}</div>
+        <div className='tripInfo__station'>{props.ticket.departure.to.railway_station_name}</div>
       </div>
     </div>
 

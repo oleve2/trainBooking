@@ -29,7 +29,6 @@ export default function PagePassengers() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  /* а должно ли биться кол-во мест в заказе с кол-вом пассажиров в заявке? */ 
   // store
   const passengerList       = useSelector((store) => store.passengerReducer.passengersList );
   const pasengerId          = useSelector((store) => store.passengerReducer.lastPassengerId);
@@ -38,8 +37,8 @@ export default function PagePassengers() {
   const handleAddPassenger = () => {
     let pl2 = cloneDeep(passengerList);
     pl2.push({id: pasengerId});
-    dispatch( actionsPassengerReducer.setlastPassengerId(pasengerId+1) );   //setpasengerId(pasengerId+1);
-    dispatch( actionsPassengerReducer.setpassengersList(pl2) );   //setpassengerList(pl2);
+    dispatch( actionsPassengerReducer.setlastPassengerId(pasengerId+1) );
+    dispatch( actionsPassengerReducer.setpassengersList(pl2) );
     return;
   }
 
@@ -48,7 +47,6 @@ export default function PagePassengers() {
     for (let i=0; i < pl2.length; i++) {
       if (pl2[i].id === id) {
         pl2.splice(i, 1);
-        //setpassengerList(pl2);
         dispatch( actionsPassengerReducer.setpassengersList(pl2) );
         return;
       }
@@ -60,16 +58,14 @@ export default function PagePassengers() {
     for (let i=0; i < pl2.length; i++) {
       if (pl2[i].id === item.id) {
         pl2[i] = item;
-        //setpassengerList(pl2);
         dispatch( actionsPassengerReducer.setpassengersList(pl2) );
         return;
       }
     }
   }
 
-  // submit passengers data and go to payment page
   const doSubmitPassengers = () => {
-    console.log('seats=', storepurchaseSeats.length, 'passengers=', passengerList.length);
+    //console.log('seats=', storepurchaseSeats.length, 'passengers=', passengerList.length);
     if (storepurchaseSeats.length !== passengerList.length) {
       alert(`Ошибка! Кол-во купленных мест (${storepurchaseSeats.length}) не равно кол-ву пассажиров (${passengerList.length})`);
       return;

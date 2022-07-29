@@ -1,6 +1,4 @@
 
-//import Navigation from "../components/Navigation"
-
 // images
 import ekValn from '../assets/valnova_ek.png';
 import evgStryk from '../assets/strykalo_evg.png';
@@ -51,11 +49,9 @@ export default function PageHome() {
     </div>
   </div>
 
-  {/* как это работает */}
   <div className="homeBlock howItWorks" id="howItWorks">
     <div className="howItWorks__header">
       <div className="hiwHead__logo">Как это работает</div>
-      {/*<div>Узнать больше</div>*/}
       <button className="hiwHead__button" type="button" onClick={() => {console.log('123')}}>Узнать больше</button>
     </div>
     
@@ -75,7 +71,6 @@ export default function PageHome() {
     </div>
   </div>
 
-  {/* Отзывы */}
   <div className="homeBlock reviews" id="reviews">
     <div className='reviews_headtext'>Отзывы</div>
     <ul className="reviews_ul">
@@ -100,7 +95,6 @@ export default function PageHome() {
     
   </div>
   
-  {/* Футер */}
   <Footer/>
 
   </>)

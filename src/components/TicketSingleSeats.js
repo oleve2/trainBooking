@@ -1,7 +1,9 @@
 
 import { useState } from "react"
 
+// style
 import './TicketSingleSeats.css' 
+
 
 export default function TicketSingleSeats(props) {
   //
@@ -27,9 +29,9 @@ export default function TicketSingleSeats(props) {
   return ( 
   <div className="tsSeats__wrapper">
     <div className="tsSeats__info" onClick={doToggle}>
-      <div className="tsSeats__innerWrp tsSeats__class">{titleMapper[props.classTitle]}</div>         {/* classTitle:  */}
-      <div className="tsSeats__cnt">{props.cntLeft}</div>                         {/* cntLeft:  */}
-      <div className="tsSeats__innerWrp tsSeats__price">от {props.seatPrices.bottom_price} р.</div>   {/*JSON.stringify(props.seatPrices.bottom_price)*/}
+      <div className="tsSeats__innerWrp tsSeats__class">{titleMapper[props.classTitle]}</div>
+      <div className="tsSeats__cnt">{props.cntLeft}</div>
+      <div className="tsSeats__innerWrp tsSeats__price">от {props.seatPrices.bottom_price} р.</div>
     </div>
     
     { (flgShow) 

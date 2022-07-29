@@ -3,29 +3,25 @@ import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 /*  
-props:
+Props:
 - data
 - changer(val)
 */
 
 //
 export default function Switcher(props) {
-  //const [isChecked, setIsChecked]= useState(props.data);
-  
+  //  
   return ( 
-  <div style={{width: 'fit-content', padding: '0 20px 0 0'}}> {/* border: '1px solid black',  */}
+  <div style={{width: 'fit-content', padding: '0 20px 0 0'}}>
     <FormControlLabel
       value="start"
       control={<Switch color="warning" />}
-      label={props.label} /*"Start"*/
+      label={props.label}
       labelPlacement="start"
       color="warning"
       checked={props.data}
-      onChange={() => {props.changer(!props.data) }}  //setIsChecked(!isChecked)}
+      onChange={() => {props.changer(!props.data) }}
     /> 
-    {/*
-    <div style={{textAlign: 'center'}}>{JSON.stringify(isChecked)}</div>  
-    */}
   </div>
   )
 }

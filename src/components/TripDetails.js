@@ -42,9 +42,7 @@ export default function TripDetails() {
 
   useEffect( () => {
     let newObj = {'Взрослый': 0, 'Детский': 0};
-    //console.log('storepassengersList=', storepassengersList)
     for (let i=0; i < storepassengersList.length; i++) {
-      //console.log(storepassengersList[i]);
       if (storepassengersList[i].ticketType === 'Взрослый') {
         newObj['Взрослый'] += 1;
       }
@@ -142,7 +140,7 @@ export default function TripDetails() {
 
       <div>Информация по местам</div>
       { storepurchaseSeats.map( (item, ind) => {
-        return <div key={ind}> {/*JSON.stringify(item)*/}
+        return <div key={ind}>
           Вагон {item.coachName} место {item.seatIndex}
         </div>
       }) } 

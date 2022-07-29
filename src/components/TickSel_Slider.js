@@ -9,8 +9,12 @@ import './TickSel_Slider.css';
 import { actionsTicketReducer } from '../rtkstore/ticketReducer';
 import { fetchRoutes, makeCalcsAAA } from '../rtkstore/ticketReducer';
 
+// images
+import slideLeft from  '../assets/slideLeft.png';
+import slideRight from '../assets/slideRight.png';
+
 /*
-props:
+Props:
 - total_count (сколько билетов нашлось - может бьть и 0)
 */ 
 export default function TickSel_Slider(props) {
@@ -20,15 +24,15 @@ export default function TickSel_Slider(props) {
   const storeticketsPerPage = useSelector( (store) => store.ticketReducer.ticketsPerPage );
 
   // more store vals
-  const storecntBlocks        = useSelector( (store) => store.ticketReducer.cntBlocks );   //, setcntBlocks] = useState(0);
-  const storesliderBlockList  = useSelector( (store) => store.ticketReducer.sliderBlockList );   //, setsliderBlockList] = useState([]);
-  const storesliderActive     = useSelector( (store) => store.ticketReducer.sliderActive );   //, setsliderActive] = useState(1);
+  const storecntBlocks        = useSelector( (store) => store.ticketReducer.cntBlocks );
+  const storesliderBlockList  = useSelector( (store) => store.ticketReducer.sliderBlockList );
+  const storesliderActive     = useSelector( (store) => store.ticketReducer.sliderActive );
 
   // page div select handler
   const handlePageSelect = (num) => {
-    dispatch( actionsTicketReducer.setsliderActive(num) );  //setsliderActive(num);
+    dispatch( actionsTicketReducer.setsliderActive(num) );
     dispatch( actionsTicketReducer.settoffset(num - 1) );
-    dispatch( fetchRoutes() ); //storeCityFrom._id, storeCityTo._id
+    dispatch( fetchRoutes() );
   }
 
   const buttonLeft = () => {
@@ -48,21 +52,19 @@ export default function TickSel_Slider(props) {
 
   //
   useEffect( () => {
-    dispatch( makeCalcsAAA(storeticketsPerPage, props.total_count) );        // recalc elements
-    dispatch( actionsTicketReducer.setsliderActive(1) );   //setsliderActive(1); // reset slider active state
+    dispatch( makeCalcsAAA(storeticketsPerPage, props.total_count) );
+    dispatch( actionsTicketReducer.setsliderActive(1) );
     dispatch( actionsTicketReducer.settoffset(0) );
   },[storeticketsPerPage, props.total_count])
 
 
   //
   return (
-    <div>
-      <div className="_TicketSlider">
-      <h4>Крутилка</h4>
-      <div>Всего билетов: {props.total_count} Показывать на странице: {storeticketsPerPage} storecntBlocks={storecntBlocks} storesliderActive={storesliderActive}</div>
+    <div className="_TicketSlider">
+
       <div className='slider_blockList'>
         <div className='slider_block' onClick={() => { buttonLeft() }}>
-          left
+          <img src={slideLeft} alt="left" />
         </div>
         
         { storesliderBlockList.map( (item) => {
@@ -75,10 +77,9 @@ export default function TickSel_Slider(props) {
         }) }
         
         <div className='slider_block' onClick={() => { buttonRight() }}>
-          right
+          <img src={slideRight} alt="right" />
         </div>
       </div>
-      </div>    
-    </div>
+    </div>    
   )
 }

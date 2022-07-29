@@ -1,28 +1,18 @@
-//import * as React from 'react';
+
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useState } from 'react';
 
-/* 
-[debouncer]
-для информации -  https://dmitripavlutin.com/react-throttle-debounce/
-пользовался этим - // https://stackoverflow.com/questions/62522994/how-do-i-lower-the-rate-of-http-requests-triggered-due-to-onchange-for-material
-*/
+
 
 /*
-props.min
-props.max
-props.rangeName
-props.rangeWidth
-props.topLevelDebouncer
+Props:
+  - props.min
+  - props.max
+  - props.rangeName
+  - props.rangeWidth
+  - props.topLevelDebouncer
 */ 
-
-/*
-const httpReq = (val) => {
-  console.log(val, val[0], val[1]);
-}
-const topLevelDebouncer = debounce(httpReq, 300)
-*/
 
 // 
 export default function RangeSlider(props) {
@@ -34,7 +24,7 @@ export default function RangeSlider(props) {
   };
 
   return (
-    <div style={{width: 'fit-content', padding: '10px'}} > {/* border: '1px solid black',  */}
+    <div style={{width: 'fit-content', padding: '10px'}} >
       <div onClick={() => {console.log(value)}}>{props.rangeName}</div>
       <Box sx={{ width: props.rangeWidth }}>
         <Slider
@@ -42,7 +32,6 @@ export default function RangeSlider(props) {
           value={value}
           onChange={handleChange}
           valueLabelDisplay="auto"
-          /*getAriaValueText={(val) => {valuetext(val)}}*/
           color="warning"
           min={props.min}
           max={props.max}

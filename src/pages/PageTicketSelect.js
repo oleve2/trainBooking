@@ -22,30 +22,17 @@ import TickSel_Slider from '../components/TickSel_Slider';
 // ticket display parameters
 import TickSel_TicketDisplayParams from "../components/TickSel_TicketDisplayParams";
 
-
-// custom window resize hook  // https://stackoverflow.com/questions/36862334/get-viewport-window-height-in-reactjs
-//import useWindowDimensions from '../hooks/useWindowDimensions';
-
-// store - to update ticketsPerPage
-//import { makeCalcsAAA } from "../rtkstore/ticketReducer";
-
-// -------------------------------------
+//
 export default function PageTicketSelect() {
   const dispatch = useDispatch();
 
   // store
-  const storeTicketsLast = useSelector( (store) => store.ticketReducer.ticketsLast);
+  const storeTicketsLast         = useSelector( (store) => store.ticketReducer.ticketsLast);
   const storeTicketsSearchResult = useSelector( (store) => store.ticketReducer.ticketsSearchResult);
-
-  //const {height, width} = useWindowDimensions();
-  //onScroll={handScroll}
-  //const handScroll = (e) => { console.log(e.target.scrollLeft) }
 
   // кнопки показывать по
   const storeticketsPerPage = useSelector( (store) => store.ticketReducer.ticketsPerPage )
   const storeticketsPerPageList  = useSelector( (store) => store.ticketReducer.ticketsPerPageList )
-  //const [ticketsByPageLimitActive, setticketsByPageLimitActive] = useState(storeticketsPerPage);
-
 
   useEffect( () => {
     dispatch( actionsTicketReducer.setnavigationProgressActive(1) );
@@ -56,7 +43,6 @@ export default function PageTicketSelect() {
 
   //
   return (<>
-    {/* width={width} height={height} */}
     <div className="TSHeader">
       <HeaderLogoNavi/>
       
@@ -68,25 +54,21 @@ export default function PageTicketSelect() {
     </div>
 
     <div className="TSBody">
-      {/* left side */}
       <div> 
         <TickSel_SearchPanel />
 
         <TickSel_TicketsLatest ticketsLast={storeTicketsLast}/>
       </div>
 
-      {/* right side */}
-      <div style={{overflowX:'scroll'}}>  {/* border:'1px solid blue', */}
+      <div style={{overflowX:'scroll'}}>
         <div className='TicketList'>
           <h3>Билеты</h3>
 
-          {/* отображение билетов */}
           <TickSel_TicketDisplayParams 
             storeticketsPerPageList={storeticketsPerPageList}
             ticketsByPageLimitActive={storeticketsPerPage}
           />
           
-          {/*  */}
           <ul className='TicketList__ul'>
             {
             (storeTicketsSearchResult.total_count > 0)
@@ -105,7 +87,6 @@ export default function PageTicketSelect() {
           </ul>
         </div>
         
-        {/* pagination */}
         <TickSel_Slider 
           total_count={storeTicketsSearchResult.total_count}
         />
@@ -118,5 +99,3 @@ export default function PageTicketSelect() {
   </>
   )
 }
-
-

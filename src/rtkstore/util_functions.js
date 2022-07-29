@@ -43,10 +43,8 @@ export const buildRoutesQuery = (state, baseURL) => {
 
   // [search params]
   let tickRedSP = state.ticketReducer.searchParams;
-  //console.log('tickRedSP', tickRedSP);
   
   // 1-1) cityFrom cityTo
-  //console.log('cityFrom._id=', tickRedSP.cityFrom._id, 'cityTo._id', tickRedSP.cityTo._id);
   if ( (tickRedSP.cityFrom === undefined) || (tickRedSP.cityTo === undefined) ) {
     alert('cityFrom or cityTo is not set');
     return;
@@ -55,45 +53,28 @@ export const buildRoutesQuery = (state, baseURL) => {
   }
   
   // 1-2) dateDepart dateReturn
-  //console.log('dateDepart=', tickRedSP.dateDepart, 'dateReturn', tickRedSP.dateReturn);
   if ( tickRedSP.dateDepart != '') { routesURL += `&date_start=${tickRedSP.dateDepart}` }
   if ( tickRedSP.dateReturn != '') { routesURL += `&date_end=${tickRedSP.dateReturn}` }
   
   // 1-3) is-flags
-  /*console.log('isKupe', tickRedSP.isKupe, 'isPlatskart', tickRedSP.isPlatskart, 
-    'isSitting', tickRedSP.isSitting, 'isLux', tickRedSP.isLux, 
-    'isWifi', tickRedSP.isWifi, 'isExpress', tickRedSP.isExpress);*/
-  //
   if ( tickRedSP.isKupe      === true) { routesURL += `&have_second_class=${tickRedSP.isKupe}` }
   if ( tickRedSP.isPlatskart === true) { routesURL += `&have_third_class=${tickRedSP.isPlatskart}` }
   if ( tickRedSP.isSitting   === true) { routesURL += `&have_fourth_class=${tickRedSP.isSitting}` }
   if ( tickRedSP.isLux       === true) { routesURL += `&have_first_class=${tickRedSP.isLux}` }
   if ( tickRedSP.isWifi      === true) { routesURL += `&have_wifi=${tickRedSP.isWifi}` }
   if ( tickRedSP.isExpress   === true) { routesURL += `&have_express=${tickRedSP.isExpress}` }
-  /*
-  routesURL += `&have_second_class=${tickRedSP.isKupe}\
-&have_third_class=${tickRedSP.isPlatskart}\
-&have_fourth_class=${tickRedSP.isSitting}\
-&have_first_class=${tickRedSP.isLux}\
-&have_wifi=${tickRedSP.isWifi}\
-&have_express=${tickRedSP.isExpress}`;
-  */
 
   // 1-4) priceFrom priceTo
   if ( tickRedSP.priceRange !== undefined ) { routesURL += `&price_from=${tickRedSP.priceRange[0]}&price_to=${tickRedSP.priceRange[1]}` }
-
-
 
   // limit and offset
   let tickRed = state.ticketReducer; // ticket reducer head
   let limit   = tickRed.ticketsPerPage;
   let offset  = tickRed.offset * tickRed.ticketsPerPage;  
-  //console.log('limit', limit, 'offset', offset);
   routesURL += `&limit=${limit}&offset=${offset}`;
 
-  console.log('routesURL=', routesURL);
-
   // final return
+  //console.log('routesURL=', routesURL);
   return routesURL;
 }
 
@@ -103,28 +84,17 @@ export const buildRoutesQuery = (state, baseURL) => {
 export const buildSeatsQuery = (trainId, state, baseURL) => {
   // final url
   let seatsURL=`${baseURL}/routes/${trainId}/seats?`;   
-  /*
-  // [search params]
-  let tickRedSP = state.ticketReducer.searchParams;
-
-  if ( tickRedSP.isWifi      === true) { seatsURL += `&have_wifi=${tickRedSP.isWifi}` }
-
-  if ( tickRedSP.isKupe      === true) { seatsURL += `&have_second_class=${tickRedSP.isKupe}` }
-  if ( tickRedSP.isPlatskart === true) { seatsURL += `&have_third_class=${tickRedSP.isPlatskart}` }
-  if ( tickRedSP.isSitting   === true) { seatsURL += `&have_fourth_class=${tickRedSP.isSitting}` }
-  if ( tickRedSP.isLux       === true) { seatsURL += `&have_first_class=${tickRedSP.isLux}` }
-  
-  if ( tickRedSP.isExpress   === true) { seatsURL += `&have_express=${tickRedSP.isExpress}` }  
-  */
-  console.log('seatsURL = ', seatsURL);
+  //console.log('seatsURL = ', seatsURL);
   return seatsURL;
 }
 
-
-
-
-
-
-
-
+// ---------------------------------
+// if val undefined return '' - state in passengerAddForm and pagePayment
+export const checkPAF = (val) => {
+  if (val !== undefined) {
+    return val;
+  } else {
+    return '';
+  }
+}
 

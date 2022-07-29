@@ -92,9 +92,7 @@ export default function PageOrderSuccess() {
   </div>
 
   <div className="TSFooter">
-      <Footer/>
+    <Footer/>
   </div>  
   </>)
 }
-
-

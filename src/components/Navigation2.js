@@ -1,5 +1,4 @@
 
-//import { Link } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 
 export default function Navigation2(props) {

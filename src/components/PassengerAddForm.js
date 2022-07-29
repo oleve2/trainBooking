@@ -6,24 +6,17 @@ import './PassengerAddForm.css';
 // images
 import psngrShow from '../assets/passengers/passengerShow.png';
 import psngrHide from '../assets/passengers/passengerHide.png';
-
+import { checkPAF } from '../rtkstore/util_functions';
 
 //
 export default function PassengerAddForm(props) {
   const [formVisible, setformVisible] = useState(false);
 
-  // ---------------------------------
   // 01 ticketType
   const ticketTypeList = ['', 'Взрослый','Детский'];
   const [ticketTypeSelected, setticketTypeSelected] = useState( (props.p.ticketType !== undefined) ? props.p.ticketType : '' );
   
-  const checkPAF = (val) => {
-    if (val !== undefined) {
-      return val;
-    } else {
-      return '';
-    }
-  }
+
 
   // 02 FIO
   const [firstName, setfirstName]   = useState( checkPAF(props.p.firstName) );
@@ -49,7 +42,7 @@ export default function PassengerAddForm(props) {
   // ----------------------------------
   //
   const changeTickType = (e) => {
-    console.log(e.target.value);
+    //console.log(e.target.value);
     setticketTypeSelected(e.target.value);
   }
 
@@ -71,7 +64,7 @@ export default function PassengerAddForm(props) {
       docSeries: docSeries,
       docNumber: docNumber,
     }
-    console.log('obj=', obj);
+    //console.log('obj=', obj);
 
     // update store in page-passengers
     props.handleUpdatePassenger(obj);
@@ -162,7 +155,7 @@ export default function PassengerAddForm(props) {
           </div>
         </div>
 
-        <div className="psngrForm__section"> {/*style={{display:'flex'}}*/}
+        <div className="psngrForm__section">
           <div className='vertTab'>
             <label>Тип документа</label>
             <select name="select" value={docTypeSelected} onChange={(e) => { setdocTypeSelected(e.target.value) }}>
@@ -172,7 +165,6 @@ export default function PassengerAddForm(props) {
             </select>
           </div>
           
-          {/* тип документа */}
           {
           (docTypeSelected === 'Паспорт РФ') && 
           <>

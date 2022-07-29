@@ -20,12 +20,9 @@ import NavigationProgress from "../components/NavigationProgress";
 // left side panels
 import TickSel_SearchPanel    from "../components/TickSel_SearchPanel";
 import TickSel_TicketsLatest  from "../components/TickSel_TicketsLatest";
-// slider
-//import TickSel_Slider from "../components/TickSel_Slider";
 
 // store
 import { fetchSeats } from "../rtkstore/ticketReducer";
-
 
 
 /*
@@ -48,12 +45,9 @@ export default function PageSeatSelect() {
   const {trainId} = useParams();
   //
   const [seatData, setseatData] = useState([]);
-  //const [seatDataLoaded, setseatDataLoaded] = useState(storeflgSeatsLoaded);
 
   // click Forward
   const doClickForward = () => {
-    //console.log('storepurchaseTrain=', storepurchaseTrain, storepurchaseTrain.train_id);
-    //console.log('storepurchaseSeats=', storepurchaseSeats, storepurchaseSeats.length);
     if (storepurchaseSeats.length === 0) {
       alert("Вы не выбрали ни одного билета!");
     } else {
@@ -98,15 +92,12 @@ export default function PageSeatSelect() {
         <TickSel_TicketsLatest ticketsLast={storeTicketsLast}/>
       </div>
 
-      {/* список вагонов (отфильтрованный) и места какие в них есть */}
       <div> 
         <div>
           <div>
             train ID: {trainId} <br />
-            {/*JSON.stringify(seatData)*/}
           </div>
           
-          {/**/}
           { (seatData.length > 0) 
             ? <>
               { seatData.map( (item, index) => {

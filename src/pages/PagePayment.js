@@ -10,6 +10,8 @@ import TicketSearchForm from "../components/TicketSearchForm"
 import Footer from "../components/Footer";
 import NavigationProgress from "../components/NavigationProgress";
 import TripDetails from "../components/TripDetails";
+import { checkPAF } from "../rtkstore/util_functions";
+
 
 // styles
 import './PagePayment.css';
@@ -26,12 +28,12 @@ export default function PagePayment() {
   const storepaymentInfo = useSelector( (store) => store.passengerReducer.paymentInfo);
 
   // form info
-  const [firstName, setfirstName]   = useState(storepaymentInfo.firstName);
-  const [secondName, setsecondName] = useState(storepaymentInfo.secondName);
-  const [thirdName, setthirdName]   = useState(storepaymentInfo.thirdName);
+  const [firstName, setfirstName]   = useState( checkPAF(storepaymentInfo.firstName) );
+  const [secondName, setsecondName] = useState( checkPAF(storepaymentInfo.secondName) );
+  const [thirdName, setthirdName]   = useState( checkPAF(storepaymentInfo.thirdName) );
 
-  const [phone, setphone]   = useState(storepaymentInfo.phone);
-  const [email, setemail]   = useState(storepaymentInfo.email);
+  const [phone, setphone]   = useState( checkPAF(storepaymentInfo.phone) );
+  const [email, setemail]   = useState( checkPAF(storepaymentInfo.email) );
 
   const [payOnline, setpayOnline]   = useState( (storepaymentInfo !== '') ? storepaymentInfo.payOnline : false);
   const [payOffline, setpayOffline] = useState( (storepaymentInfo !== '') ? storepaymentInfo.payOffline: false );
@@ -51,7 +53,6 @@ export default function PagePayment() {
   }
 
   const doSubmitPayments = () => {
-    // save payment info
     let obj = {
       firstName: firstName,
       secondName: secondName,
@@ -61,21 +62,17 @@ export default function PagePayment() {
       payOnline: payOnline,
       payOffline: payOffline,
     }
-    // validation
     let resVal = validatePaymentsObject(obj);
     if (!resVal) {
       return;
     }
 
-    // запись в store
     dispatch( actionsPassengerReducer.setpaymentInfo(obj) );
-    // переадресация
     navigate('/checkout');
   }
 
   useEffect( () => {
     dispatch( actionsTicketReducer.setnavigationProgressActive(3) );
-    //console.log("storepaymentInfo=", storepaymentInfo);
   },[])
 
   useEffect( () => {

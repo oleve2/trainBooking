@@ -20,7 +20,6 @@ import footerUp from '../assets/footer_up.png';
 export default function Footer() {
   return (
   <>
-  {/* Футер */}
   <div className="homeBlock footer" id="contacts">
     <div className="footer_head">
       <div className="a2">
@@ -88,7 +87,7 @@ export default function Footer() {
         src={footerUp} alt="Наверх" 
         onClick={() => { window.scrollTo(0,0)}} 
       />
-      <div className="footer-bottom__dev">Powered by UnKnown, 2022</div>
+      <div className="footer-bottom__dev">Powered by oleve2, 2022</div>
     </div>
   </div>  
   </>

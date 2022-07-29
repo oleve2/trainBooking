@@ -28,17 +28,14 @@ export default function TickSel_TicketsLatest(props) {
           <div className='serv-wrapper'>
             <div className='serv_img'>
               <img className={'serv_img ' + ( (item.have_wifi) ? 'serv_img_active' : '' )} src={latest_wifi} alt="wifi" />
-              {/*wifi: {JSON.stringify(item.have_wifi)} */}
             </div>
 
             <div className='serv_img'>
               <img className={'serv_img'} src={latest_express} alt="express" />
-              {/*xexpr: {JSON.stringify(item.is_express)} */}
             </div>
 
             <div className='serv_img'>
               <img className={'serv_img'} src={latest_meal} alt="conditioning" />
-              {/*cond: {JSON.stringify(item.have_air_conditioning)} */}
             </div>
           </div>
 

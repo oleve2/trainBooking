@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionsTicketReducer, makeCalcsAAA, fetchRoutes } from "../rtkstore/ticketReducer";
 
 /* 
-props:
+Props:
 - storeticketsPerPageList
 - ticketsByPageLimitActive
 */
@@ -18,9 +18,9 @@ export default function TickSel_TicketDisplayParams(props) {
 
   //
   const setPageLimitToStore = (val) => {
-    dispatch( actionsTicketReducer.setticketsPerPage(val) );  // update store
+    dispatch( actionsTicketReducer.setticketsPerPage(val) );
     dispatch( makeCalcsAAA(storeticketsPerPage, storeTicketsSearchResult.total_count) );
-    dispatch( fetchRoutes() ); //storeCityFrom._id, storeCityTo._id
+    dispatch( fetchRoutes() );
   }
 
   //

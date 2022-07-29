@@ -11,11 +11,11 @@ import './Coach_PickSeat.css';
 // store
 import { SeatsDoAction } from '../rtkstore/ticketReducer';
 
-// https://stackoverflow.com/questions/48474/how-do-i-position-one-image-on-top-of-another-in-html
 
-/* props:
-- seatsData
-- coachName
+/* 
+Props:
+  - seatsData
+  - coachName
 */
 
 //
@@ -50,9 +50,6 @@ export default function Coach_PickSeat(props) {
 
   //
   return (<>
-    {/*
-    <div>{JSON.stringify(seatsData)}</div>
-    */}
     <div className="cps-wrapper">
       <img src={coachBase} alt="_вагон_" className="img-coach" />
       

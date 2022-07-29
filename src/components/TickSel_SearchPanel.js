@@ -24,8 +24,6 @@ import imgExpress from '../assets/express.png';
 import RangeSlider from "./ui/RangeSlider";
 import Switcher from "./ui/Switcher";
 
-//import TripFromTo from "./TripFromTo";
-
 // store
 import { actionsTicketReducer } from '../rtkstore/ticketReducer';
 import { fetchRoutes, updatepriceRange, updatetudaDepartDateRange, updatetudaArrivDateRange } from '../rtkstore/ticketReducer';
@@ -36,7 +34,6 @@ export default function TickSel_SearchPanel() {
   const dispatch = useDispatch();
 
   const [tudaToggle, setTudaToggle] = useState(false)
-  //const [obratnoToggle, setObratnoToggle] = useState(false)
 
   // store (params and changers)
   const {
@@ -71,13 +68,13 @@ export default function TickSel_SearchPanel() {
 
   // set DateDepart
   const clickDateDepart = (val) => {
-    console.log(`DateDepart = ${val}`);
+    //console.log(`DateDepart = ${val}`);
     dispatch(actionsTicketReducer.setdateDepart(val)) 
   }
 
   // set DateReturn
   const clickDateReturn = (val) => {
-    console.log(`DateReturn = ${val}`);
+    //console.log(`DateReturn = ${val}`);
     dispatch(actionsTicketReducer.setdateReturn(val)) 
   }  
 
@@ -110,7 +107,7 @@ export default function TickSel_SearchPanel() {
 
   // top level debouncer for price setting (изменить названия функций)
   const doUpdatePriceRange = (val) => {
-    console.log(val, val[0], val[1]);
+    //console.log(val, val[0], val[1]);
     dispatch( updatepriceRange(val) );
     dispatch( fetchRoutes() );
   }
@@ -118,16 +115,14 @@ export default function TickSel_SearchPanel() {
 
   // top level debouncer for tuda depart and arriv hours
   const doTudaDepartDate = (val) => {
-    console.log('doTudaDepartDate', val);
+    //console.log('doTudaDepartDate', val);
     dispatch( updatetudaDepartDateRange(val) );
-    //dispatch( fetchRoutes() );
   }
   const topLevelTudaDepartDateDebouncer = debounce(doTudaDepartDate, 1000)
 
   const doTudaArrivDate = (val) => {
-    console.log('doTudaArrivDate', val);
+    //console.log('doTudaArrivDate', val);
     dispatch( updatetudaArrivDateRange(val) );
-    //dispatch( fetchRoutes() );
   }
   const topLevelTudaArrivDateDebouncer = debounce(doTudaArrivDate, 1000)
 
@@ -155,37 +150,37 @@ export default function TickSel_SearchPanel() {
 
       <div className="tsparamBlock">
         <ul className="ticketOptions__ul">
-          <li className="ticketOptions__li"> {/* storeisKupe */}
+          <li className="ticketOptions__li">
             <img src={imgKupe} alt="Купе" /> 
             <div>Купе</div>
             <Switcher data={storeisKupe} changer={changeisKupe}/>
           </li>
 
-          <li className="ticketOptions__li"> {/* storeisPlatskart */}
+          <li className="ticketOptions__li">
             <img src={imgPlats} alt="Плацкарт" /> 
             <div>Плацкарт</div>
             <Switcher data={storeisPlatskart} changer={changeisPlatskart}/>
           </li>
 
-          <li className="ticketOptions__li">  {/* storeisSitting */}
+          <li className="ticketOptions__li">
             <img src={imgSit} alt="Сидячий" /> 
             <div>Сидячий</div>
             <Switcher data={storeisSitting} changer={changestoreisSitting}/>
           </li>
 
-          <li className="ticketOptions__li"> {/* storeisLux */}
+          <li className="ticketOptions__li">
             <img src={imgLux} alt="Люкс" />
             <div>Люкс</div>
             <Switcher data={storeisLux} changer={changeisLux}/>
-          </li>   
+          </li>
 
-          <li className="ticketOptions__li">  {/* storeisWifi */}
+          <li className="ticketOptions__li">
             <img src={imgWifi} alt="WIFI" />
             <div>WIFI</div>
             <Switcher data={storeisWifi} changer={changeisWifi}/>
           </li>
 
-          <li className="ticketOptions__li">  {/* storeisExpress */}
+          <li className="ticketOptions__li">
             <img src={imgExpress} alt="Экспресс" />
             <div>Экспресс</div>
             <Switcher data={storeisExpress} changer={changeisExpress}/>
@@ -204,7 +199,7 @@ export default function TickSel_SearchPanel() {
           value={storepriceRange}
           rangeWidth='300px' 
           topLevelDebouncer={topLevelDebouncer}
-        />  {/* rangeName='Стоимость' */}
+        />
       </div>
 
       <hr className="hrLine"/>

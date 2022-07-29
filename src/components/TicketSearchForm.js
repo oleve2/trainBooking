@@ -19,8 +19,9 @@ import switch_tsf from '../assets/switch_tsf.png';
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 /**
- * direction: 'row' or 'column'
- * isFixed: true or false (может ли форма изменять свойство 'direction' если меняются параметры window )
+Props:
+ - direction: 'row' or 'column'
+ - isFixed: true or false (может ли форма изменять свойство 'direction' если меняются параметры window )
 */
 
 //
@@ -41,18 +42,18 @@ export default function TicketSearchForm(props) {
 
   // cities
   const [cityFromStr, setcityFromStr] = useState( (storeCityFrom.name == undefined) ? '' : storeCityFrom.name ); //''
-  const [cityFrom, setCityFrom] = useState([]);  // init from store
+  const [cityFrom, setCityFrom] = useState([]);
   const [isCityFromSelected, setisCityFromSelected] = useState(false);
-  const [flgCityFromLoaded, setflgCityFromLoaded] = useState(false); // flag cityFrom loaded
-  const [flgCityFromShow, setflgCityFromShow] = useState(false);  // flag show
-  const [cityFromHover, setcityFromHover] = useState(false); // hover over list of cities
+  const [flgCityFromLoaded, setflgCityFromLoaded] = useState(false);
+  const [flgCityFromShow, setflgCityFromShow] = useState(false);
+  const [cityFromHover, setcityFromHover] = useState(false);
 
   const [cityToStr, setcityToStr] = useState(  (storeCityTo.name == undefined) ? '' : storeCityTo.name  ); //''
-  const [cityTo, setCityTo] = useState([]); // init from store
+  const [cityTo, setCityTo] = useState([]);
   const [isCityToSelected, setIsCityToSelected] = useState(false);
-  const [flgCityToLoaded, setflgCityToLoaded] = useState(false); // flag cityTo loaded
-  const [flgCityToShow, setflgCityToShow] = useState(false);  // flag show
-  const [cityToHover, setcityToHover] = useState(false); // hover over list of cities 
+  const [flgCityToLoaded, setflgCityToLoaded] = useState(false);
+  const [flgCityToShow, setflgCityToShow] = useState(false);
+  const [cityToHover, setcityToHover] = useState(false);
   
 
   // dates
@@ -60,11 +61,10 @@ export default function TicketSearchForm(props) {
   const [dateReturn, setdateReturn] = useState(storeDateReturn);
 
   // ticket form direction to display
-  const [dir, setDir] = useState(props.direction);          // 'column' or 'row'
-  const [isFixed2] = useState(props.isFixed);  // should a form resize with window or not
+  const [dir, setDir] = useState(props.direction);    // 'column' or 'row'
+  const [isFixed2] = useState(props.isFixed);         // should a form resize with window or not
 
   const changeDirection = () => {
-    //(dir === 'column') ? setDir('row') : setDir('column'); 
     setDir(dir === 'column' ? 'row' : 'column');
   }
 
@@ -91,7 +91,7 @@ export default function TicketSearchForm(props) {
   // select city from
   const clickCityFromDroplistDiv = (item) => {
     setcityFromStr(item.name);
-    storeSetCityFrom(item); // set cityFrom to store
+    storeSetCityFrom(item);
     setisCityFromSelected(true);
     setflgCityFromShow(false);
     setcityFromHover(false);
@@ -100,7 +100,7 @@ export default function TicketSearchForm(props) {
   // select city to
   const clickCityToDroplistDiv = (item) => {
     setcityToStr(item.name);
-    storeSetCityTo(item); // set cityTo to store
+    storeSetCityTo(item);
     setIsCityToSelected(true);
     setflgCityToShow(false);
     setcityToHover(false);
@@ -120,8 +120,6 @@ export default function TicketSearchForm(props) {
   }
 
 
-  // https://erikmartinjordan.com/start-search-user-not-typing
-  /**/
   const fetchCity = async (str) => {
     let resp = await fetch(`${baseURL}/routes/cities?name=${str}`);
     let data = await resp.json();
@@ -181,7 +179,6 @@ export default function TicketSearchForm(props) {
 
   // пересчет direction
   useEffect( () => {
-    //console.log(`width changed to ${width}`);
     if ((isFixed2 === false) && (width < 1500)) {
       setDir('column')
     }
@@ -192,7 +189,7 @@ export default function TicketSearchForm(props) {
 
   // ---------------------------------------------------
   return (
-    <div className='ticketForm'>     {/*width={width} height={height} {JSON.stringify(props.isFixed)}*/}
+    <div className='ticketForm'>
     <form className='ticketSearchForm'>
       <div className={(dir === 'column' ? 'dirColumn' : 'dirRow')}>
         <div style={{height: '100px', margin: '40px'}}>
@@ -209,7 +206,7 @@ export default function TicketSearchForm(props) {
                   setcityFromHover(false);
                 }
               }}
-            > {/* Город Откуда */}
+            > 
               <input className="FInput" value={cityFromStr} 
                 onChange={handleCityFromInputChange} 
               />
@@ -244,7 +241,7 @@ export default function TicketSearchForm(props) {
                   setcityToHover(false);
                 }
               }}
-            > {/* Город Куда */}
+            > 
               <input className="FInput" value={cityToStr}
                 onChange={handleCityToInputChange}  
               />
@@ -272,7 +269,6 @@ export default function TicketSearchForm(props) {
           <label>Даты поездки</label> 
           
           <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
-            {/* дата отбытия Туда */ }
             <input className="FInput" type="date" 
               value={dateDepart}
               onChange={(e) => { clickDateDepart(e.target.value) }} 
@@ -282,7 +278,6 @@ export default function TicketSearchForm(props) {
               <img src={switch_tsf} alt="switch" className='tsf_img' style={{width: '24px', height:'24px'}} onClick={changeDirection} />
             </div>  
             
-            {/* должно быть - дата обратной поездки, но это неточно ... */ }
             <input className="FInput" type="date" 
               value={dateReturn}
               onChange={(e) => { clickDateReturn(e.target.value) }} 
@@ -292,7 +287,6 @@ export default function TicketSearchForm(props) {
 
       </div>
       
-      {/* 3 */}
       <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '40px', marginBottom: '40px'}}>
         <button className='tsf_button' type="button" onClick={handleSearchButton}>Найти билеты</button>
       </div>

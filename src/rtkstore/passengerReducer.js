@@ -24,6 +24,3 @@ const passengerReducer = createSlice({
 export const actionsPassengerReducer = passengerReducer.actions;
 export default passengerReducer.reducer;
 
-
-// [thunk functions]
-
